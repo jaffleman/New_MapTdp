@@ -1,6 +1,6 @@
 # 📘 **New\_MapTdp**
 
-Modernisation complète de l'application **MapTdp**, une application destinée à faciliter la localisation des abonnés ADSL dans les salles de dégroupage grâce au référencement des colonnes, niveaux et réglettes des RCO.
+Modernisation complète de l'application **MapTdp**, une application destinée à faciliter la localisation des positions abonnés ADSL dans les salles de dégroupage grâce au référencement des colonnes, niveaux et réglettes des RCO.
 
 Ce projet vise à reconstruire l’application selon les standards modernes du cloud et du DevOps :  
 **conteneurisation, Kubernetes (K3s), GitOps, CI/CD, intégration PostgreSQL, sécurité, observabilité et automatisation complète.**
