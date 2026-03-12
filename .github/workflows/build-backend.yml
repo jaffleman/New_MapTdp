@@ -18,8 +18,7 @@ permissions:
 
 env:
   REGISTRY: docker.io
-  # Remplace <dockerhub-username> par ton identifiant Docker Hub
-  IMAGE_NAME: <dockerhub-username>/maptdp-backend
+  IMAGE_NAME: jaffleman971/maptdp-backend
 
 jobs:
   build:
@@ -31,10 +30,10 @@ jobs:
         uses: actions/checkout@v4
 
       # (Optionnel) Installer Node pour lancer tests backend avant build
-      - name: Use Node 20
+      - name: Use Node 24
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
 
