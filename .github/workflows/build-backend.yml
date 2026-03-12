@@ -1,0 +1,88 @@
+name: Build & Push Backend Image (Docker Hub)
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - "v*.*.*"
+    paths:
+      - "backend/**"
+      - ".github/workflows/build-backend-dockerhub.yml"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "backend/**"
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: docker.io
+  # Remplace <dockerhub-username> par ton identifiant Docker Hub
+  IMAGE_NAME: <dockerhub-username>/maptdp-backend
+
+jobs:
+  build:
+    name: Build (PR) / Build & Push (main, tags)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # (Optionnel) Installer Node pour lancer tests backend avant build
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install deps & run tests (backend)
+        working-directory: backend
+        run: |
+          npm ci
+          npm test --if-present
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Login Docker Hub (pas sur PR)
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Génère automatiquement tags & labels (sha, latest, branch, tag semver)
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=tag
+          labels: |
+            org.opencontainers.image.title=MapTdp Backend
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - name: Build (PR) / Build & Push (main, tags)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
