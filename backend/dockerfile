@@ -1,4 +1,4 @@
-# ---------- STAGE 1: builder ----------
+# ---------- STAGE 1: builder -----------
 FROM node:20-bookworm-slim AS builder
 
 ENV NODE_ENV=production CI=true
