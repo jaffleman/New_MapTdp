@@ -54,7 +54,7 @@ jspm_packages/
 .temp/
 
 # Gestionnaires
-package-lock.json
+# package-lock.json
 yarn.lock
 pnpm-lock.yaml
 # => si tu veux versionner un lockfile, enlève la ligne correspondante ci-dessus
