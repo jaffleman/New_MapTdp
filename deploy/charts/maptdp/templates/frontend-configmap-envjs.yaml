@@ -1,0 +1,13 @@
+{{- if .Values.frontend.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "maptdp.fullname" . }}-frontend-env
+  labels:
+    {{- include "maptdp.labels" . | nindent 4 }}
+data:
+  env.js: |
+    window.__RUNTIME_CONFIG__ = {
+      API_BASE_URL: "{{ .Values.frontend.runtimeConfig.apiBaseUrl }}"
+    };
+{{- end }}

@@ -1,0 +1,59 @@
+{{- if .Values.frontend.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "maptdp.fullname" . }}-frontend
+  labels:
+    {{- include "maptdp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: frontend
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: frontend
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "maptdp.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.global.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
+          volumeMounts:
+            - name: envjs
+              mountPath: /usr/share/nginx/html/env.js
+              subPath: env.js
+      volumes:
+        - name: envjs
+          configMap:
+            name: {{ include "maptdp.fullname" . }}-frontend-env
+            items:
+              - key: env.js
+                path: env.js
+      nodeSelector:
+        {{- toYaml .Values.frontend.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.frontend.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.frontend.tolerations | nindent 8 }}
+{{- end }}

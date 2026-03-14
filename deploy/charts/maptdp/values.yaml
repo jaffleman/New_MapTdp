@@ -1,0 +1,26 @@
+global:
+  imagePullSecrets: []   # ex: [{ name: dockerhub-cred }]
+
+frontend:
+  ingress:
+    enabled: true
+    host: "tdp.jaffleman.tech"   
+    tls: true
+    annotations:
+      kubernetes.io/ingress.class: "traefik"
+      traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "le"
+    # ➜ nouveau : route API du backend via le même host
+    api:
+      enabled: true
+      path: "/api"
+
+  # le frontend consomme l’API via le même host + /api
+  runtimeConfig:
+    apiBaseUrl: "https://tdp.jaffleman.tech/api"  # ⚠️ remplace par le même host
+
+backend:
+  # Pas d'Ingress pour le backend
+  ingress:
+    enabled: false

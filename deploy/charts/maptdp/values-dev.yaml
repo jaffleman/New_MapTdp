@@ -1,0 +1,16 @@
+frontend:
+  image:
+    tag: "latest"
+  ingress:
+    host: "maptdp.dev.jaffleman.tech"
+  runtimeConfig:
+    apiBaseUrl: "https://api.dev.jaffleman.tech"
+
+backend:
+  image:
+    tag: "latest"
+  ingress:
+    host: "api.dev.jaffleman.tech"
+  env:
+    - name: LOG_LEVEL
+      value: "debug"
