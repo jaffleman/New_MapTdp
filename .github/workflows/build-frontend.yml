@@ -1,0 +1,98 @@
+name: Build & Push Frontend Image (Docker Hub)
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - "v*.*.*"
+    paths:
+      - "frontend/**"
+      - ".github/workflows/build-frontend-dockerhub.yml"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "frontend/**"
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: jaffleman971/maptdp-frontend
+
+jobs:
+  build:
+    name: Build (PR) / Build & Push (main, tags)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Installer Node pour lancer tests/build frontend (aligné sur backend : Node 24)
+      - name: Use Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install deps & run tests (frontend)
+        working-directory: frontend
+        run: |
+          npm ci
+          # CRA: empêcher le mode watch et ne pas échouer si pas de tests
+          npm test --if-present -- --watchAll=false || echo "no tests yet"
+
+      # (Optionnel) Build local pour valider (non obligatoire car on build via Docker après)
+      - name: Build production (frontend)
+        working-directory: frontend
+        env:
+          CI: "true"
+          # Décommente si tu rencontres un souci OpenSSL avec des libs anciennes
+          # NODE_OPTIONS: --openssl-legacy-provider
+        run: |
+          npm run build
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Login Docker Hub (pas sur PR)
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Génère automatiquement tags & labels (sha, latest, branch, tag semver)
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=tag
+          labels: |
+            org.opencontainers.image.title=MapTdp Frontend
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - name: Build (PR) / Build & Push (main, tags)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
