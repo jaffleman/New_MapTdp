@@ -1,4 +1,4 @@
-# --- Étape 1 : Build (Node 20 is fine for react-scripts 5) ---
+# --- Étape 1 : Build (Node 20 is fine for react-scripts 5) ----
 FROM node:20-alpine AS build
 
 # Améliore les temps de build et évite d'installer des dépendances optionnelles
