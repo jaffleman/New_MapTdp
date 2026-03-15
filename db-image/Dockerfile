@@ -1,4 +1,4 @@
-name: Build & Push DB Image (Docker Hub)
+name: Build & Push DB Image (Docker Hub) 
 
 on:
   push:
