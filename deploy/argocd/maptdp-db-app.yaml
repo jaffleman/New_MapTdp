@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: maptdp-db
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jaffleman/New_MapTdp.git
+    targetRevision: main
+    path: deploy/charts/maptdp-db
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: maptdp
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
