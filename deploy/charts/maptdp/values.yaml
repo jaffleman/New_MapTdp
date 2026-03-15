@@ -1,5 +1,8 @@
 # deploy/charts/maptdp/values.yaml
 
+global:
+  imagePullSecrets: []
+
 frontend:
   enabled: true
 
