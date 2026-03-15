@@ -1,28 +1,68 @@
-global:
-  imagePullSecrets: []   # ex: [{ name: dockerhub-cred }]
+# deploy/charts/maptdp/values.yaml
 
 frontend:
   enabled: true
+
+  image:
+    repository: docker.io/jaffleman971/maptdp-frontend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+
   ingress:
     enabled: true
-    host: "tdp.jaffleman.tech"   
+    host: "tdp.dev.example.com"   # ⚠️ remplace
     tls: true
     annotations:
       kubernetes.io/ingress.class: "traefik"
       traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "le"
-    # ➜ nouveau : route API du backend via le même host
     api:
       enabled: true
-      path: "/api"
+      path: /api
 
-  # le frontend consomme l’API via le même host + /api
   runtimeConfig:
-    apiBaseUrl: "https://tdp.jaffleman.tech/api"  # ⚠️ remplace par le même host
+    apiBaseUrl: "https://tdp.dev.example.com/api"  # ⚠️ remplace
+
+  resources:
+    requests: { cpu: 50m, memory: 64Mi }
+    limits:   { cpu: 300m, memory: 256Mi }
 
 backend:
   enabled: true
-  # Pas d'Ingress pour le backend
-  ingress:
-    enabled: false
+
+  image:
+    repository: docker.io/jaffleman971/maptdp-backend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 8000
+
+  env: []
+  envFrom: []
+
+  livenessProbe:
+    enabled: true
+    path: /healthz
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+
+  readinessProbe:
+    enabled: true
+    path: /healthz
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
