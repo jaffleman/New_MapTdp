@@ -2,6 +2,7 @@ global:
   imagePullSecrets: []   # ex: [{ name: dockerhub-cred }]
 
 frontend:
+  enabled: true
   ingress:
     enabled: true
     host: "tdp.jaffleman.tech"   
@@ -21,6 +22,7 @@ frontend:
     apiBaseUrl: "https://tdp.jaffleman.tech/api"  # ⚠️ remplace par le même host
 
 backend:
+  enabled: true
   # Pas d'Ingress pour le backend
   ingress:
     enabled: false
