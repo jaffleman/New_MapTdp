@@ -1,4 +1,4 @@
-name: Build & Push DB Image (Docker Hub) 
+name: Build & Push DB Image (Docker Hub)
 
 on:
   push:
@@ -16,18 +16,33 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Show docker info (debug)
+        run: |
+          docker version
+          docker info
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v3
         with:
           install: true
           driver: docker-container
+          # (optionnel) image plus récente de buildkit
+          # driver-opts: image=moby/buildkit:latest
+
+      - name: Inspect Buildx (debug)
+        run: |
+          docker buildx version
+          docker buildx ls
+          docker buildx inspect "${{ steps.buildx.outputs.name }}" --bootstrap
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -38,6 +53,8 @@ jobs:
       - name: Build & Push
         uses: docker/build-push-action@v6
         with:
+          # ⚠️ on force l'utilisation du builder créé plus haut
+          builder: ${{ steps.buildx.outputs.name }}
           context: ./db-image
           file: ./db-image/Dockerfile
           push: true
