@@ -36,7 +36,9 @@ spec:
           envFrom:
             - secretRef:
                 name: maptdp-backend-env
-            {{- toYaml .Values.backend.envFrom | nindent 12 }}
+          {{- with .Values.backend.envFrom }}
+          {{ toYaml . | nindent 10 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           {{- if .Values.backend.livenessProbe.enabled }}
