@@ -252,6 +252,7 @@ const tdpController = {
     
 
   updateid(req, res) {
+    res.status(200).end("Le backend repond!")
     /*
     tdp.find({}, function (err, arr) {
       if (err) {
@@ -281,6 +282,10 @@ const tdpController = {
       }
     });
     */
+  },
+  
+  test(req, res) {
+    res.status(200).end("maptdp-backend online.")
   },
 
   async delete(req, res) {

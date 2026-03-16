@@ -11,5 +11,6 @@ router.post("/tdp/create", tdpController.create);
 router.put("/tdp/update", tdpController.update);
 router.delete("/tdp/delete", tdpController.delete);
 router.get("/tdp/updateid", tdpController.updateid);
+router.get("/healthz", tdpController.test);
 
 module.exports = router;
