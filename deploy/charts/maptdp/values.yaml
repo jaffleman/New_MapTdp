@@ -51,7 +51,7 @@ backend:
   envFrom: []
 
   livenessProbe:
-    enabled: false
+    enabled: true
     path: /healthz
     initialDelaySeconds: 15
     periodSeconds: 10
@@ -59,7 +59,7 @@ backend:
     failureThreshold: 3
 
   readinessProbe:
-    enabled: false
+    enabled: true
     path: /healthz
     initialDelaySeconds: 5
     periodSeconds: 10
