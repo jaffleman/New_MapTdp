@@ -2,7 +2,7 @@ frontend:
   image:
     tag: "v0.1.0"
   ingress:
-    host: "maptdp.jaffleman.tech"
+    host: "tdp.jaffleman.tech"
   runtimeConfig:
     apiBaseUrl: "https://api.jaffleman.tech"
 
