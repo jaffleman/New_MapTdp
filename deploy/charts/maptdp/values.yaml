@@ -17,7 +17,7 @@ frontend:
 
   ingress:
     enabled: true
-    host: "tdp.dev.example.com"   # ⚠️ remplace
+    host: "tdp.jaffleman.tech"  
     tls: true
     annotations:
       kubernetes.io/ingress.class: "traefik"
