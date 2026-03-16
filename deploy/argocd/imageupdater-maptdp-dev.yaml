@@ -8,7 +8,7 @@ spec:
     - namePattern: "maptdp-dev"
       images:
         - alias: frontend
-          imageName: docker.io/jaffleman971/maptdp-frontend:~0.1
+          imageName: docker.io/jaffleman971/maptdp-frontend:~1
           commonUpdateSettings:
             updateStrategy: semver
             allowTags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
@@ -19,7 +19,7 @@ spec:
               tag:  "frontend.image.tag"
 
         - alias: backend
-          imageName: docker.io/jaffleman971/maptdp-backend:~0.1
+          imageName: docker.io/jaffleman971/maptdp-backend:~1
           commonUpdateSettings:
             updateStrategy: semver
             allowTags: "regexp:^v\\d+\\.\\d+\\.\\d+$"

@@ -1,11 +1,11 @@
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: maptdp-db-dev
+  name: maptdp-db
   namespace: argocd
 spec:
   applicationRefs:
-    - namePattern: "maptdp-db-dev"   # <-- remplace par le nom exact de l'Application DB
+    - namePattern: "maptdp-db"   # <-- remplace par le nom exact de l'Application DB
       images:
         - alias: db
           imageName: docker.io/jaffleman971/maptdp-db:~16
@@ -21,4 +21,4 @@ spec:
     method: git
     gitConfig:
       branch: main
-      writeBackTarget: "helmvalues:values-dev.yaml"  # chemin relatif au chart DB
+      writeBackTarget: "helmvalues:values.yaml"  # chemin relatif au chart DB
