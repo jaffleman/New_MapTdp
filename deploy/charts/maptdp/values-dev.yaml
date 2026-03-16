@@ -7,7 +7,7 @@ frontend:
   runtimeConfig:
     apiBaseUrl: "https://api.dev.jaffleman.tech"
 backend:
-  replicaCount: 2
+  replicaCount: 1
   image:
     repository: docker.io/jaffleman971/maptdp-backend
     tag: "v1.0.2"
