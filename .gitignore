@@ -291,3 +291,6 @@ TODO.md
 notes.md
 .local/
 *.local
+allow-db-from-all-temporary2.yaml
+allow-db-from-all-temporary.yaml
+maptdp-backend-egress-to-db.yaml
