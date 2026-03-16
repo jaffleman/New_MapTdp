@@ -22,7 +22,7 @@ LABEL org.opencontainers.image.title="finalbackmaptdp" \
       org.opencontainers.image.licenses="ISC"
 
 ENV NODE_ENV=production \
-    PORT=3000
+    PORT=8000
 
 WORKDIR /app
 
@@ -32,6 +32,6 @@ COPY --chown=nonroot:nonroot --from=builder /app/package*.json /app/
 COPY --chown=nonroot:nonroot --from=builder /app/index.js /app/
 COPY --chown=nonroot:nonroot --from=builder /app/app /app/app
 
-EXPOSE 3000
+EXPOSE 8000
 USER nonroot
 CMD ["/app/index.js"]
