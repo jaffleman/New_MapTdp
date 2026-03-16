@@ -1,0 +1,37 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: maptdp-dev
+  namespace: argocd
+spec:
+  applicationRefs:
+    - namePattern: "maptdp-dev"
+      images:
+        - alias: frontend
+          imageName: docker.io/jaffleman971/maptdp-frontend:~0.1
+          commonUpdateSettings:
+            updateStrategy: semver
+            allowTags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
+            forceUpdate: true
+          manifestTargets:
+            helm:
+              name: "frontend.image.repository"
+              tag:  "frontend.image.tag"
+
+        - alias: backend
+          imageName: docker.io/jaffleman971/maptdp-backend:~0.1
+          commonUpdateSettings:
+            updateStrategy: semver
+            allowTags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
+            forceUpdate: true
+          manifestTargets:
+            helm:
+              name: "backend.image.repository"
+              tag:  "backend.image.tag"
+
+  writeBackConfig:
+    method: git
+    gitConfig:
+      branch: main
+      # ATTENTION : chemin relatif au répertoire du chart Helm de FE/BE
+      writeBackTarget: "helmvalues:values-dev.yaml"
