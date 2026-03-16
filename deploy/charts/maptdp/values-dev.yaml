@@ -1,18 +1,17 @@
 frontend:
   image:
     repository: docker.io/jaffleman971/maptdp-frontend
-    tag: "latest"
+    tag: "v1.0.2"
   ingress:
     host: "maptdp.dev.jaffleman.tech"
   runtimeConfig:
     apiBaseUrl: "https://api.dev.jaffleman.tech"
-
 backend:
   image:
     repository: docker.io/jaffleman971/maptdp-backend
-    tag: "latest"
+    tag: "v1.0.2"
   ingress:
     host: "api.dev.jaffleman.tech"
   env:
-    - name: LOG_LEVEL
-      value: "debug"
+  - name: LOG_LEVEL
+    value: "debug"
