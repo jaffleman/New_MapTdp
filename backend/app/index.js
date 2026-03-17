@@ -29,8 +29,8 @@ const PORT = process.env.PORT || 3000;
     });
 
     app.use(router);
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Backend listening on 0.0.0.0:${PORT}`);
+    app.listen(PORT, () => {
+      console.log(`Backend listening on all interfaces:${PORT}`);
     });
   } catch (error) {
     console.error("Unable to connect to the database.\n", error);
