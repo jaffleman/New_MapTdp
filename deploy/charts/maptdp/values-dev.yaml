@@ -1,7 +1,7 @@
 frontend:
   image:
     repository: docker.io/jaffleman971/maptdp-frontend
-    tag: "v1.1.4"
+    tag: "v1.1.5"
   ingress:
     host: "maptdp.dev.jaffleman.tech"
   runtimeConfig:
