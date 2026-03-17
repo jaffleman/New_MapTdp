@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
   try {
     console.log("Try to connect the database.\nPlease wait...");
     await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
+    console.log("Connection has been established successfully: " + sequelize.options.host);
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
