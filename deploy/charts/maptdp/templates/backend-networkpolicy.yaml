@@ -2,7 +2,8 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "maptdp.fullname" . }}-backend-deny-all-except-traefik
+  name: {{ include "maptdp.fullname" . }}-backend-deny-all-except-allowed
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "maptdp.labels" . | nindent 4 }}
 spec:
@@ -10,15 +11,17 @@ spec:
     matchLabels:
       app.kubernetes.io/component: backend
       app.kubernetes.io/instance: {{ .Release.Name }}
+
   policyTypes:
     - Ingress
     - Egress
+
   ingress:
-    # Autoriser Traefik (adapte labels/namespace de ton Traefik)
+
+    # 1. Autoriser Traefik → Backend
     - from:
         - namespaceSelector:
             matchLabels:
-              # ⚠️ adapte selon ton cluster : namespace où tourne Traefik
               kubernetes.io/metadata.name: traefik
           podSelector:
             matchLabels:
@@ -26,7 +29,21 @@ spec:
       ports:
         - protocol: TCP
           port: {{ .Values.backend.service.port }}
-    # Autoriser le DNS (optionnel si ton app backend résout des hôtes externes)
+
+    # 2. Autoriser Frontend → Backend (PROXY_PASS depuis Nginx)
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ .Release.Namespace }}
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/component: frontend
+              app.kubernetes.io/instance: {{ .Release.Name }}
+      ports:
+        - protocol: TCP
+          port: {{ .Values.backend.service.port }}
+
+    # 3. Autoriser kube-dns pour la résolution DNS interne
     - from:
         - namespaceSelector:
             matchLabels:
@@ -39,8 +56,10 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
+
   egress:
-    # Autoriser DNS sortant
+
+    # 1. DNS sortant (nécessaire pour résoudre le Service Postgres)
     - to:
         - namespaceSelector:
             matchLabels:
@@ -53,10 +72,15 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
-    # (Optionnel) Autoriser Postgres (si DB interne)
+
+    # 2. Backend → Base de données PostgreSQL
     - to:
-        - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: database } }
-          podSelector: { matchLabels: { app: postgres } }
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: database
+          podSelector:
+            matchLabels:
+              app: postgres
       ports:
         - protocol: TCP
           port: 5432
