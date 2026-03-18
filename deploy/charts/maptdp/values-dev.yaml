@@ -1,7 +1,7 @@
 frontend:
   image:
     repository: docker.io/jaffleman971/maptdp-frontend
-    tag: "v1.2.0"
+    tag: "v1.2.1"
   ingress:
     host: "maptdp.dev.jaffleman.tech"
   runtimeConfig:
@@ -10,7 +10,7 @@ backend:
   replicaCount: 1
   image:
     repository: docker.io/jaffleman971/maptdp-backend
-    tag: "v1.2.0"
+    tag: "v1.2.1"
   ingress:
     host: "api.dev.jaffleman.tech"
   env:
