@@ -9,7 +9,7 @@ export async function fetcher (route:string, method:string, data:Tdp[]|RepTab[],
         else return {data:[]}
     }else{
         const body = JSON.stringify(data)
-        const result = await fetch(process.env.REACT_APP_URL +`${route}`,
+        const result = await fetch("/api" +`${route}`,
         { 
             method,
             mode: 'cors',
