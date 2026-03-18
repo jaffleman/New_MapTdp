@@ -11,6 +11,7 @@ spec:
     path: deploy/charts/maptdp
     helm:
       valueFiles:
+        - values.yaml
         - values-prod.yaml
   destination:
     server: https://kubernetes.default.svc

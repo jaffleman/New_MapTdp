@@ -7,25 +7,16 @@ metadata:
     {{- include "maptdp.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/ingress.class: "traefik"
-    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: "le"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
-  {{- if .Values.frontend.ingress.tls }}
   tls:
     - hosts:
         - {{ .Values.frontend.ingress.host }}
       secretName: {{ include "maptdp.fullname" . }}-tls
-  {{- end }}
-
   rules:
     - host: {{ .Values.frontend.ingress.host }}
       http:
         paths:
-
-          # ==========================================
-          # 1) SERVE THE FRONTEND SPA AT /
-          # ==========================================
           - path: /
             pathType: Prefix
             backend:
@@ -34,9 +25,6 @@ spec:
                 port:
                   number: {{ .Values.frontend.service.port }}
 
-          # ==========================================
-          # 2) /api → FRONTEND → NGINX PROXY_PASS → BACKEND PRIVÉ
-          # ==========================================
           {{- if .Values.frontend.ingress.api.enabled }}
           - path: {{ .Values.frontend.ingress.api.path | default "/api" }}
             pathType: Prefix
@@ -46,5 +34,4 @@ spec:
                 port:
                   number: {{ .Values.frontend.service.port }}
           {{- end }}
-
 {{- end }}
