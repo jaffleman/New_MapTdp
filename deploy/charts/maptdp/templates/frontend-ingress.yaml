@@ -6,7 +6,10 @@ metadata:
   labels:
     {{- include "maptdp.labels" . | nindent 4 }}
   annotations:
-    {{- toYaml .Values.frontend.ingress.annotations | nindent 4 }}
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: "le"
 spec:
   {{- if .Values.frontend.ingress.tls }}
   tls:
@@ -14,11 +17,15 @@ spec:
         - {{ .Values.frontend.ingress.host }}
       secretName: {{ include "maptdp.fullname" . }}-tls
   {{- end }}
+
   rules:
     - host: {{ .Values.frontend.ingress.host }}
       http:
         paths:
-          # Frontend à la racine
+
+          # ==========================================
+          # 1) SERVE THE FRONTEND SPA AT /
+          # ==========================================
           - path: /
             pathType: Prefix
             backend:
@@ -27,14 +34,17 @@ spec:
                 port:
                   number: {{ .Values.frontend.service.port }}
 
-          {{- if and .Values.backend.enabled .Values.frontend.ingress.api.enabled }}
-          # Backend routé via /api sur le même host
+          # ==========================================
+          # 2) /api → FRONTEND → NGINX PROXY_PASS → BACKEND PRIVÉ
+          # ==========================================
+          {{- if .Values.frontend.ingress.api.enabled }}
           - path: {{ .Values.frontend.ingress.api.path | default "/api" }}
             pathType: Prefix
             backend:
               service:
-                name: {{ include "maptdp.fullname" . }}-backend
+                name: {{ include "maptdp.fullname" . }}-frontend
                 port:
-                  number: {{ .Values.backend.service.port }}
+                  number: {{ .Values.frontend.service.port }}
           {{- end }}
+
 {{- end }}
