@@ -1,7 +1,8 @@
 const tdps = require("../models/tdpModel");
 const repartiteurs = require("../models/repModel");
 const reglettes = require('../models/regModel')
-const options = require('../models/optModel')
+const options = require('../models/optModel');
+const { request } = require("express");
 
 // la premiere chose a faire c'est de definir les relations entre tables pour que les jointures fonctionnes
 // on n'a aucune table pivot mais uniquement des foreignkey situées dans notre table tdps
@@ -16,6 +17,7 @@ tdps.belongsTo(options, {foreignKey:'opts'})
 const tdpController = {
 
   async search(req, res) {
+    console.log("search request received", req.body);
     // recherche d'un tdp (exemple: 'cho94 L/INX19120')
     // voici un exemple de requette générée par search()
     //SELECT "tdps"."id", "tdps"."reglette_nbr", "tdps"."salle", "tdps"."rco", "tdps"."ferme", "tdps"."level", "repartiteur"."id" AS "repartiteur.id", "repartiteur"."code_name" AS "repartiteur.code_name", "repartiteur"."zip" AS "repartiteur.zip", "reglette"."id" AS "reglette.id", "reglette"."reglette_label" AS "reglette.reglette_label", "opt"."id" AS "opt.id", "opt"."opt_label" AS "opt.opt_label" FROM "tdps" AS "tdps" INNER JOIN "repartiteurs" AS "repartiteur" ON "tdps"."rep" = "repartiteur"."id" AND "repartiteur"."code_name" = 'cho' AND "repartiteur"."zip" = 94 INNER JOIN "reglettes" AS "reglette" ON "tdps"."reglette_type" = "reglette"."id" AND "reglette"."reglette_label" = 'L/INX' LEFT OUTER JOIN "opts" AS "opt" ON "tdps"."opts" = "opt"."id" WHERE "tdps"."reglette_nbr" = '19' LIMIT 1;
@@ -72,6 +74,7 @@ const tdpController = {
   },
 
   async searchByPosition(req, res) {
+    console.log("search by position request received", req.body);
   // la recherche par position permet de retrouver le tdp a partir de ses coordonnees dans une salle
   // si on connait les coordonnees on attend en retour le nom complet de la reglette (L/INX24)
 
@@ -111,6 +114,7 @@ const tdpController = {
   },
 
   async searchRep(req, res) {
+    console.log("search by rep request received", req.body);
   // recherche un rep (ex: 'cho94') et nous retoune tous les elements de la table tdps qui appartiennes a ce rep
   // exemple de requette generee par searchRep:
   //SELECT "tdps"."id", "tdps"."reglette_nbr", "tdps"."salle", "tdps"."rco", "tdps"."ferme", "tdps"."level", "repartiteur"."id" AS "repartiteur.id", "repartiteur"."code_name" AS "repartiteur.code_name", "repartiteur"."long_name" AS "repartiteur.long_name", "repartiteur"."zip" AS "repartiteur.zip", "repartiteur"."nbr_salle" AS "repartiteur.nbr_salle", "repartiteur"."address" AS "repartiteur.address", "reglette"."id" AS "reglette.id", "reglette"."reglette_label" AS "reglette.reglette_label", "opt"."id" AS "opt.id", "opt"."opt_label" AS "opt.opt_label" FROM "tdps" AS "tdps" INNER JOIN "repartiteurs" AS "repartiteur" ON "tdps"."rep" = "repartiteur"."id" AND "repartiteur"."code_name" = 'cho' AND "repartiteur"."zip" = 94 INNER JOIN "reglettes" AS "reglette" ON "tdps"."reglette_type" = "reglette"."id" LEFT OUTER JOIN "opts" AS "opt" ON "tdps"."opts" = "opt"."id";
@@ -162,6 +166,7 @@ const tdpController = {
 
 
   async create(req, res ) {
+    console.log("create request received", req.body);
   //on va donc creer un nouvel element dans la table tdp
   const results = []
     for (let i = 0; i < req.body.length; i++) {//on boucle sur les elements à creer dans la requette req.body
@@ -218,6 +223,7 @@ const tdpController = {
 
 
   async update(req, res) {
+    console.log("update request received", req.body);
     for (let i = 0; i < req.body.length; i++) {//on boucle sur les elements à creer dans la requette req.body
       const tdp = req.body[i]
       try {
@@ -252,6 +258,7 @@ const tdpController = {
     
 
   updateid(req, res) {
+    console.log("update id")
     res.status(200).end("Le backend repond!")
     /*
     tdp.find({}, function (err, arr) {
@@ -285,10 +292,12 @@ const tdpController = {
   },
   
   test(req, res) {
+    console.log("Test request received : api/healthz");
     res.status(200).end("maptdp-backend online.")
   },
 
   async delete(req, res) {
+    console.log("req.body", req.body);
     for (let i = 0; i < req.body.length; i++) {//on boucle sur les elements à creer dans la requette req.body
       const tdp = req.body[i]
       try {
