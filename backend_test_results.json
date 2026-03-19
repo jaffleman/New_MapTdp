@@ -1,0 +1,79 @@
+{
+  "total_tests": 8,
+  "passed_tests": 8,
+  "success_rate": "100.0%",
+  "test_details": [
+    {
+      "test_name": "Health Check",
+      "success": true,
+      "details": {
+        "status_code": 200,
+        "response_size": 42,
+        "has_data": true
+      }
+    },
+    {
+      "test_name": "User Registration",
+      "success": true,
+      "details": {
+        "status_code": 200,
+        "response_size": 340,
+        "has_data": true
+      }
+    },
+    {
+      "test_name": "Get Current User",
+      "success": true,
+      "details": {
+        "status_code": 200,
+        "response_size": 97,
+        "has_data": true
+      }
+    },
+    {
+      "test_name": "User Login",
+      "success": true,
+      "details": {
+        "status_code": 200,
+        "response_size": 340,
+        "has_data": true
+      }
+    },
+    {
+      "test_name": "Login Wrong Password",
+      "success": true,
+      "details": {
+        "status_code": 401,
+        "response_size": 44,
+        "has_data": true
+      }
+    },
+    {
+      "test_name": "Register Duplicate Email",
+      "success": true,
+      "details": {
+        "status_code": 400,
+        "response_size": 39,
+        "has_data": true
+      }
+    },
+    {
+      "test_name": "User Login",
+      "success": true,
+      "details": {
+        "status_code": 200,
+        "response_size": 314,
+        "has_data": true
+      }
+    },
+    {
+      "test_name": "Search Proxy (Express Backend)",
+      "success": true,
+      "details": {
+        "status_code": 200,
+        "response_size": 2,
+        "has_data": false
+      }
+    }
+  ]
+}
