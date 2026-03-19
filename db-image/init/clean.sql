@@ -251,7 +251,7 @@ COPY public.acces (id, type, code, mk) FROM stdin;
 115	Bâtiment 🏢	95257	94
 116	Bâtiment 	INCO	95
 117	Bâtiment 	1612A	96
-118		A936B	97
+118	Bâtiment 	A936B	97
 119	Barrière 	INCO	98
 120	Bâtiment 	4A16	99
 121	Ascenseur 	INCO	99
