@@ -37,5 +37,5 @@ networkPolicy:
 imagePullSecrets: []
 db:
   image:
-    tag: "16.11"
+    tag: "16.12"
     repository: docker.io/jaffleman971/maptdp-db
