@@ -6,33 +6,33 @@
 /* ===== DARK THEME (default) ===== */
 :root,
 [data-theme="dark"] {
-  --bg: #0c0c0c;
+  --bg: #1a1a1a;
   --bg-gradient: none;
-  --surface: rgba(22, 22, 22, 0.85);
+  --surface: rgba(35, 35, 35, 0.85);
   --surface-highlight: rgba(255, 255, 255, 0.04);
-  --border-color: rgba(255, 255, 255, 0.08);
+  --border-color: rgba(255, 255, 255, 0.07);
   --text-primary: #e0e0e0;
-  --text-secondary: #787878;
+  --text-secondary: #808080;
   --accent: #a0a0a0;
   --accent-hover: #d0d0d0;
-  --accent-subtle: rgba(160, 160, 160, 0.12);
-  --accent-glow: 0 0 8px rgba(160, 160, 160, 0.15);
+  --accent-subtle: rgba(160, 160, 160, 0.1);
+  --accent-glow: 0 0 8px rgba(160, 160, 160, 0.12);
   --danger: #e55050;
   --success: #5cb87a;
   --warning: #d4a832;
 
-  --glass-bg: rgba(18, 18, 18, 0.88);
+  --glass-bg: rgba(28, 28, 28, 0.88);
   --glass-blur: blur(16px);
   --glass-border: 1px solid rgba(255, 255, 255, 0.06);
-  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
-  --header-bg: rgba(12, 12, 12, 0.92);
+  --header-bg: rgba(24, 24, 24, 0.92);
   --card-hover-border: rgba(255, 255, 255, 0.12);
 
-  --input-bg: rgba(0, 0, 0, 0.25);
+  --input-bg: rgba(0, 0, 0, 0.18);
   --input-border: rgba(255, 255, 255, 0.08);
-  --input-focus-border: rgba(200, 200, 200, 0.4);
-  --input-focus-shadow: 0 0 0 2px rgba(160, 160, 160, 0.1);
+  --input-focus-border: rgba(200, 200, 200, 0.35);
+  --input-focus-shadow: 0 0 0 2px rgba(160, 160, 160, 0.08);
 
   --btn-bg: transparent;
   --btn-border: rgba(160, 160, 160, 0.35);
