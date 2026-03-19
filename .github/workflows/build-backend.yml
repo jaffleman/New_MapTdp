@@ -7,7 +7,7 @@ on:
       - "v*.*.*"
     paths:
       - "backend/**"
-      - ".github/workflows/build-backend-dockerhub.yml"
+      - ".github/workflows/build-backend.yml"
 
   pull_request:
     branches: [ "main" ]
@@ -23,26 +23,47 @@ env:
 
 jobs:
   build:
-    name: Build (PR) / Build & Push (main, tags)
+    name: Build backend
     runs-on: ubuntu-latest
 
-    # 🔥 IMPORTANT : Ne build que si des fichiers backend ont changé
-    if: |
-      github.event_name == 'pull_request' ||
-      (
-        startsWith(github.ref, 'refs/tags/v') &&
-        (
-          contains(join(github.event.commits.*.modified, ','), 'backend/') ||
-          contains(join(github.event.commits.*.added, ','), 'backend/') ||
-          contains(join(github.event.commits.*.removed, ','), 'backend/') ||
-          contains(join(github.event.commits.*.modified, ','), '.github/workflows/build-backend-dockerhub.yml')
-        )
-      )
-
     steps:
+      # ------------------------ CHECKOUT ------------------------
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      # ------------------------ DETECT CHANGES ------------------------
+      - name: Detect backend changes
+        id: changes
+        run: |
+          git fetch --tags --force
+
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            echo "Tag detected: ${GITHUB_REF_NAME}"
+
+            PREV=$(git rev-parse "${GITHUB_REF_NAME}^" 2>/dev/null || echo "")
+            [[ -z "$PREV" ]] && PREV="HEAD~1"
+
+            CHANGED=$(git diff --name-only "$PREV" HEAD | grep "^backend/" || true)
+          else
+            CHANGED=$(git diff --name-only HEAD~1 HEAD | grep "^backend/" || true)
+          fi
+
+          if [[ -n "$CHANGED" ]]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      # ------------------------ SKIP IF NO CHANGE ------------------------
+      - name: Stop workflow if backend unchanged
+        if: steps.changes.outputs.changes == 'false' && github.event_name != 'pull_request'
+        run: |
+          echo "Aucun changement backend → build ignoré."
+          exit 0
+
+      # ------------------------ NODE ------------------------
       - name: Use Node 24
         uses: actions/setup-node@v4
         with:
@@ -50,26 +71,27 @@ jobs:
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
 
-      - name: Install deps & run tests (backend)
+      - name: Install deps & test
         working-directory: backend
         run: |
           npm ci
           npm test --if-present || echo "no tests yet"
 
+      # ------------------------ DOCKER ------------------------
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
+      - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
+      - name: Login Docker Hub
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels)
+      - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -80,12 +102,8 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=tag
-          labels: |
-            org.opencontainers.image.title=MapTdp Backend
-            org.opencontainers.image.source=${{ github.repository }}
-            org.opencontainers.image.revision=${{ github.sha }}
 
-      - name: Build (PR) / Build & Push (main, tags)
+      - name: Build & Push
         uses: docker/build-push-action@v6
         with:
           context: ./backend
@@ -93,6 +111,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max

@@ -7,7 +7,7 @@ on:
       - "v*.*.*"
     paths:
       - "frontend/**"
-      - ".github/workflows/build-frontend-dockerhub.yml"
+      - ".github/workflows/build-frontend.yml"
 
   pull_request:
     branches: [ "main" ]
@@ -23,26 +23,45 @@ env:
 
 jobs:
   build:
-    name: Build (PR) / Build & Push (main, tags)
+    name: Build frontend
     runs-on: ubuntu-latest
 
-    # 🔥 NE S’EXÉCUTE QUE SI des fichiers frontend ont été modifiés
-    if: |
-      github.event_name == 'pull_request' ||
-      (
-        startsWith(github.ref, 'refs/tags/v') &&
-        (
-          contains(join(github.event.commits.*.modified, ','), 'frontend/') ||
-          contains(join(github.event.commits.*.added, ','), 'frontend/') ||
-          contains(join(github.event.commits.*.removed, ','), 'frontend/') ||
-          contains(join(github.event.commits.*.modified, ','), '.github/workflows/build-frontend-dockerhub.yml')
-        )
-      )
-
     steps:
+      # ------------------------ CHECKOUT ------------------------
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      # ------------------------ DETECT CHANGES ------------------------
+      - name: Detect frontend changes
+        id: changes
+        run: |
+          git fetch --tags --force
+
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            echo "Tag detected: ${GITHUB_REF_NAME}"
+            PREV=$(git rev-parse "${GITHUB_REF_NAME}^" 2>/dev/null || echo "")
+            [[ -z "$PREV" ]] && PREV="HEAD~1"
+            CHANGED=$(git diff --name-only "$PREV" HEAD | grep "^frontend/" || true)
+          else
+            CHANGED=$(git.diff --name-only HEAD~1 HEAD | grep "^frontend/" || true)
+          fi
+
+          if [[ -n "$CHANGED" ]]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      # ------------------------ SKIP IF NO CHANGE ------------------------
+      - name: Stop workflow if frontend unchanged
+        if: steps.changes.outputs.changes == 'false' && github.event_name != 'pull_request'
+        run: |
+          echo "Aucun changement frontend → build ignoré."
+          exit 0
+
+      # ------------------------ NODE ------------------------
       - name: Use Node 24
         uses: actions/setup-node@v4
         with:
@@ -50,26 +69,27 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install deps & run tests (frontend)
+      - name: Install deps & test
         working-directory: frontend
         run: |
           npm ci
           npm test --if-present -- --watchAll=false || echo "no tests yet"
 
-      - name: Build production (frontend)
+      - name: Build
         working-directory: frontend
         env:
           CI: "true"
         run: |
           npm run build
 
+      # ------------------------ DOCKER ------------------------
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
+      - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
+      - name: Login Docker Hub
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
@@ -87,12 +107,8 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=tag
-          labels: |
-            org.opencontainers.image.title=MapTdp Frontend
-            org.opencontainers.image.source=${{ github.repository }}
-            org.opencontainers.image.revision=${{ github.sha }}
 
-      - name: Build (PR) / Build & Push (main, tags)
+      - name: Build & Push
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
@@ -100,6 +116,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
