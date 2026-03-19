@@ -2,7 +2,6 @@
 -- PostgreSQL database cluster dump
 --
 
-\restrict lDIGCmNd5q71ChWBa27rLF4nwlkXaBUAkTpAzoZlhYRgo42vp9YFSAgzE40aoiY
 
 SET default_transaction_read_only = off;
 
@@ -29,43 +28,10 @@ ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION
 
 
 
-\unrestrict lDIGCmNd5q71ChWBa27rLF4nwlkXaBUAkTpAzoZlhYRgo42vp9YFSAgzE40aoiY
 
 --
 -- Databases
 --
-
---
--- Database "template1" dump
---
-
-\connect template1
-
---
--- PostgreSQL database dump
---
-
-\restrict wmhzqhHvaEzUEyH8GpbIqLORblVN2aFBz3C6PvlFDrjU8BGXg2vzuydb3MUWcED
-
--- Dumped from database version 16.10
--- Dumped by pg_dump version 16.10
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- PostgreSQL database dump complete
---
-
-\unrestrict wmhzqhHvaEzUEyH8GpbIqLORblVN2aFBz3C6PvlFDrjU8BGXg2vzuydb3MUWcED
 
 --
 -- Database "geolockbdd" dump
@@ -75,7 +41,6 @@ SET row_security = off;
 -- PostgreSQL database dump
 --
 
-\restrict xnbidcmncScfzMInNCOficzonsZ7coVrAaBiD9dxk60U186EAKHiP86Wsa8nsNH
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -100,9 +65,6 @@ CREATE DATABASE geolockbdd WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PR
 
 ALTER DATABASE geolockbdd OWNER TO postgres;
 
-\unrestrict xnbidcmncScfzMInNCOficzonsZ7coVrAaBiD9dxk60U186EAKHiP86Wsa8nsNH
-\connect geolockbdd
-\restrict xnbidcmncScfzMInNCOficzonsZ7coVrAaBiD9dxk60U186EAKHiP86Wsa8nsNH
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -329,7 +291,6 @@ COPY public.acces (id, type, code, mk) FROM stdin;
 154	Barrière 	INCO	120
 155	Batiment 🏢	INCO	120
 156	Batiment 	6413	121
-\.
 
 
 --
@@ -453,7 +414,6 @@ COPY public.marker (id, longitude, latitude, author, adresse, "accesNbr", "creat
 119	235461	4878738	Jaffleman	127 Avenue de la République 94800 Villejuif	\N	2025-09-26
 120	236716	4879572	Jaffleman	3 Rue Jean Baptiste Clément 94800 Villejuif	\N	2025-09-29
 121	237386	4878626	Jaffleman	32 Rue du Clos Fleuri 94800 Villejuif	\N	2025-09-29
-\.
 
 
 --
@@ -519,7 +479,6 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON TABLES TO extjaff;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict xnbidcmncScfzMInNCOficzonsZ7coVrAaBiD9dxk60U186EAKHiP86Wsa8nsNH
 
 --
 -- Database "maptdpbdd" dump
@@ -529,7 +488,6 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON TABLES TO extjaff;
 -- PostgreSQL database dump
 --
 
-\restrict R8TRKRgIHBba1a4usk75xXsXjevBxGCgbDbYg70mLjqBJO8GDJjioRY9lbLWBD4
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -554,9 +512,6 @@ CREATE DATABASE maptdpbdd WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PRO
 
 ALTER DATABASE maptdpbdd OWNER TO postgres;
 
-\unrestrict R8TRKRgIHBba1a4usk75xXsXjevBxGCgbDbYg70mLjqBJO8GDJjioRY9lbLWBD4
-\connect maptdpbdd
-\restrict R8TRKRgIHBba1a4usk75xXsXjevBxGCgbDbYg70mLjqBJO8GDJjioRY9lbLWBD4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -731,7 +686,6 @@ COPY public.opts (id, opt_label) FROM stdin;
 36	TNI
 37	INV
 38	TNI
-\.
 
 
 --
@@ -744,7 +698,6 @@ COPY public.reglettes (id, reglette_label) FROM stdin;
 3	A/TEL
 4	T/DEL
 5	T/LIF
-\.
 
 
 --
@@ -773,7 +726,6 @@ COPY public.repartiteurs (id, code_name, long_name, zip, nbr_salle, address) FRO
 18	vsg	Villeneuve-Saint-Georges	94	1	\N
 20	pog	\N	94	\N	\N
 21	pag	\N	94	\N	\N
-\.
 
 
 --
@@ -2661,7 +2613,6 @@ COPY public.tdps (id, rep, reglette_type, reglette_nbr, salle, rco, ferme, level
 1878	19	2	V2	1	1	9	6	\N
 1879	19	2	V3	1	1	9	7	\N
 1880	19	2	V4	1	1	9	8	\N
-\.
 
 
 --
@@ -2760,41 +2711,5 @@ ALTER TABLE ONLY public.tdps
 -- PostgreSQL database dump complete
 --
 
-\unrestrict R8TRKRgIHBba1a4usk75xXsXjevBxGCgbDbYg70mLjqBJO8GDJjioRY9lbLWBD4
 
 --
--- Database "postgres" dump
---
-
-\connect postgres
-
---
--- PostgreSQL database dump
---
-
-\restrict aQg51QPuazlYuyX3X67j7q6dvgEuVvfdJKCy8H6bBVXqrfzq11FcDWmmCsBcirQ
-
--- Dumped from database version 16.10
--- Dumped by pg_dump version 16.10
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- PostgreSQL database dump complete
---
-
-\unrestrict aQg51QPuazlYuyX3X67j7q6dvgEuVvfdJKCy8H6bBVXqrfzq11FcDWmmCsBcirQ
-
---
--- PostgreSQL database cluster dump complete
---
-
