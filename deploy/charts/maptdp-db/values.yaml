@@ -1,8 +1,7 @@
 image:
   repository: docker.io/jaffleman971/maptdp-db
-  tag: "16.10"           # adapte (ex: 16.10-2026-03-15)
+  tag: "16.10" # adapte (ex: 16.10-2026-03-15)
   pullPolicy: IfNotPresent
-
 postgres:
   # IMPORTANT : crée le rôle extjaff + mot de passe via Secret
   user: "extjaff"
@@ -10,18 +9,15 @@ postgres:
   passwordSecretKey: "password"
   # Laisse postgres comme DB de bootstrap ; le dump crée maptdpbdd
   db: "postgres"
-
 persistence:
   enabled: true
   accessModes: ["ReadWriteOnce"]
   size: 5Gi
-  storageClass: ""  # laisse vide pour default; sinon mets celle de ton cluster
-
+  storageClass: "" # laisse vide pour default; sinon mets celle de ton cluster
 service:
   type: ClusterIP
   port: 5432
   annotations: {}
-
 resources:
   requests:
     cpu: 100m
@@ -29,15 +25,17 @@ resources:
   limits:
     cpu: 500m
     memory: 1Gi
-
 networkPolicy:
   enabled: true
   # Autorise seulement le backend dans le même namespace maptdp (ou adapte les sélecteurs)
   allowFromNamespaces:
-    - maptdp
+  - maptdp
   allowFromPodSelectors:
-    - matchLabels:
-        app.kubernetes.io/component: backend
-
+  - matchLabels:
+      app.kubernetes.io/component: backend
 # Si ton registre est privé
 imagePullSecrets: []
+db:
+  image:
+    tag: "16.11"
+    repository: docker.io/jaffleman971/maptdp-db
