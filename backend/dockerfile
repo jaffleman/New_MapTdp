@@ -1,17 +1,12 @@
-# ---------- STAGE 1: builder ----------
 FROM node:20-bookworm-slim AS builder
 
-ENV NODE_ENV=production CI=true
 WORKDIR /app
 
-# Installer deps prod
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# Copier tout le code (pour disposer des fichiers nécessaires au runtime)
 COPY . .
 
-# ---------- STAGE 2: runtime ultra-léger ----------
 FROM gcr.io/distroless/nodejs20-debian12:nonroot AS runtime
 
 ARG VCS_REF BUILD_DATE
@@ -21,12 +16,12 @@ LABEL org.opencontainers.image.title="finalbackmaptdp" \
       org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.licenses="ISC"
 
-ENV NODE_ENV=production \
-    PORT=8000
+# ⚠️ ENLEVER TOUTES LES VARIABLES EXCEPTÉ SI C'EST VITAL
+# ENV NODE_ENV=production
+# ENV PORT=8000
 
 WORKDIR /app
 
-# 👉 Copier node_modules + tous les fichiers nécessaires à l'exécution
 COPY --chown=nonroot:nonroot --from=builder /app/node_modules /app/node_modules
 COPY --chown=nonroot:nonroot --from=builder /app/package*.json /app/
 COPY --chown=nonroot:nonroot --from=builder /app/index.js /app/
@@ -34,4 +29,5 @@ COPY --chown=nonroot:nonroot --from=builder /app/app /app/app
 
 EXPOSE 8000
 USER nonroot
+
 CMD ["/app/index.js"]
