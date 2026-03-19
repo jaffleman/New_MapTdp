@@ -161,14 +161,18 @@ const tdpController = {
       })
       //throw(reponse)
       res.json(reponse);// envoie de la reponse sous forme de json
-    } catch (error) {throw(error)}
+    } 
+    catch (error) {
+      console.error("Erreur searchRep :", error);
+      return res.status(200).json([]); 
+    }
   },
 
 
   async create(req, res ) {
     console.log("create request received", req.body);
-  //on va donc creer un nouvel element dans la table tdp
-  const results = []
+    //on va donc creer un nouvel element dans la table tdp
+    const results = []
     for (let i = 0; i < req.body.length; i++) {//on boucle sur les elements à creer dans la requette req.body
       const tdp = req.body[i]
 
@@ -181,9 +185,12 @@ const tdpController = {
             zip: tdp.cd, // peut etre par exemple 94 
           }
         })
-        .catch((err) => {throw(err)});
+        .catch((error) => {
+          console.error("Erreur create :", error);
+          return res.status(200).json([]); 
+        });
 
-  //ensuite on recupere l'id de la reglette concernee
+      //ensuite on recupere l'id de la reglette concernee
       const reg = await reglettes 
         .findOne({
           attributes: ["id"],
@@ -191,12 +198,15 @@ const tdpController = {
             reglette_label: tdp.regletteType, //peut etre 'L/INX'
           },
         })
-        .catch((err) => {throw(err)});
+        .catch((error) => {
+          console.error("Erreur create :", error);
+          return res.status(200).json([]); 
+        });
 
-  // ensuite recup de l'id de l'option 
-    opt = tdp.option=='I'?1:tdp.option=='TNI'?2:null
+      // ensuite recup de l'id de l'option 
+      opt = tdp.option=='I'?1:tdp.option=='TNI'?2:null
       
-    // on peut maintenant essayer d'inserer une ligne dans la table tdps
+      // on peut maintenant essayer d'inserer une ligne dans la table tdps
       try {
         const result = await tdps.findOrCreate({ // on recherche d'abord si le tdp exist et si ce n'est pas le cas il sera creer
           where: {// avec ces contraintes la...
@@ -215,7 +225,10 @@ const tdpController = {
           status:true,
           id:''+id+rep+reglette_type+reglette_nbr+salle+rco+ferme+level
         })
-      } catch (error) { throw(error)}
+      } catch (error) { 
+          console.error("Erreur create :", error);
+          return res.status(200).json([]); 
+      }
     }
     res.json(results)
   },
@@ -251,7 +264,10 @@ const tdpController = {
           opts: optionValue, //valeur recuperee dans la table options 
         })
         await result.save()
-      } catch (error) {throw(error)}
+      } catch (error) {
+          console.error("Erreur update :", error);
+          return res.status(200).json([]);
+      }
     }
     res.json(req.body)
   },
@@ -325,7 +341,10 @@ const tdpController = {
           },
         })
         await result.destroy()
-      } catch (error) {throw(error)}
+      } catch (error) {
+          console.error("Erreur delete :", error);
+          return res.status(200).json([]);
+      }
     }
     res.status(200).json({ status: "nothing to delete" });
   },
