@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   serviceName: {{ include "maptdp-db.fullname" . }}
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "maptdp-db.name" . }}
@@ -58,14 +58,14 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       securityContext:
         fsGroup: 999  # postgres
-  # volumeClaimTemplates:
-  #   - metadata:
-  #       name: data
-  #     spec:
-  #       accessModes: {{ .Values.persistence.accessModes | toJson }}
-  #       resources:
-  #         requests:
-  #           storage: {{ .Values.persistence.size }}
-  #       {{- if .Values.persistence.storageClass }}
-  #       storageClassName: "{{ .Values.persistence.storageClass }}"
-  #       {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: {{ .Values.persistence.accessModes | toJson }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        {{- if .Values.persistence.storageClass }}
+        storageClassName: "{{ .Values.persistence.storageClass }}"
+        {{- end }}
