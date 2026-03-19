@@ -31,11 +31,16 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.port }}
-          env:
-            {{- toYaml .Values.backend.env | nindent 12 }}
-          envFrom:
-            - secretRef:
-                name: maptdp-backend-env
+        env:
+          {{- if .Values.backend.env }}
+          {{- range .Values.backend.env }}
+          - name: {{ .name }}
+            value: {{ .value | quote }}
+          {{- end }}
+          {{- end }}
+        envFrom:
+          - secretRef:
+              name: maptdp-backend-env
           {{- with .Values.backend.envFrom }}
           {{ toYaml . | nindent 10 }}
           {{- end }}
