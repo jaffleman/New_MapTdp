@@ -23,7 +23,6 @@ function AuthPage() {
       }
     } catch (err) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   };
