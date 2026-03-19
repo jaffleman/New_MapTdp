@@ -45,7 +45,7 @@ jobs:
             [[ -z "$PREV" ]] && PREV="HEAD~1"
             CHANGED=$(git diff --name-only "$PREV" HEAD | grep "^frontend/" || true)
           else
-            CHANGED=$(git.diff --name-only HEAD~1 HEAD | grep "^frontend/" || true)
+            CHANGED=$(git diff --name-only HEAD~1 HEAD | grep "^frontend/" || true)
           fi
 
           if [[ -n "$CHANGED" ]]; then
