@@ -8,6 +8,7 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/build-backend-dockerhub.yml"
+
   pull_request:
     branches: [ "main" ]
     paths:
@@ -25,11 +26,23 @@ jobs:
     name: Build (PR) / Build & Push (main, tags)
     runs-on: ubuntu-latest
 
+    # 🔥 IMPORTANT : Ne build que si des fichiers backend ont changé
+    if: |
+      github.event_name == 'pull_request' ||
+      (
+        startsWith(github.ref, 'refs/tags/v') &&
+        (
+          contains(join(github.event.commits.*.modified, ','), 'backend/') ||
+          contains(join(github.event.commits.*.added, ','), 'backend/') ||
+          contains(join(github.event.commits.*.removed, ','), 'backend/') ||
+          contains(join(github.event.commits.*.modified, ','), '.github/workflows/build-backend-dockerhub.yml')
+        )
+      )
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # (Optionnel) Installer Node pour lancer tests backend avant build
       - name: Use Node 24
         uses: actions/setup-node@v4
         with:
@@ -49,7 +62,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Login Docker Hub (pas sur PR)
       - name: Login to Docker Hub
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
@@ -57,7 +69,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Génère automatiquement tags & labels (sha, latest, branch, tag semver)
       - name: Extract metadata (tags, labels)
         id: meta
         uses: docker/metadata-action@v5
