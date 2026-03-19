@@ -14,8 +14,8 @@ class DisplaySalle extends React.Component{
         return(
             <div className="MyCard" style={{marginBottom:'5px'}} data-testid="display-salle-card">
                 <div className="Bando-Titre2 rounded" style={{marginBottom:"1px"}}>
-                    <i className="fas fa-network-wired" style={{marginRight:'8px'}}></i>
-                    Repartiteur de <span style={{color:'var(--accent)', textTransform:'lowercase', marginLeft:'4px'}}>{name}</span>
+                    <i className="fas fa-network-wired" style={{marginRight:'6px', fontSize:'0.75rem'}}></i>
+                    Repartiteur de <span style={{textTransform:'lowercase', marginLeft:'3px'}}>{name}</span>
                 </div>
                 <Tabs justify defaultActiveKey="salle1" id="uncontrolled-tab-example" unmountOnExit={true}>
                     {salle.map(elem=><Tab key={"Salle"+elem.number} eventKey={`salle${elem.number}`} title={`Salle ${elem.number}`}>

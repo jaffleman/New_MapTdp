@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from './AuthContext';
+import { ThemeContext } from './ThemeContext';
 
 function AuthPage() {
   const { login, register } = useContext(AuthContext);
+  const { isDark, toggle } = useContext(ThemeContext);
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,43 +29,78 @@ function AuthPage() {
     }
   };
 
+  const inputStyle = {
+    width:'100%',
+    padding:'0.7rem 0.9rem',
+    background:'var(--input-bg)',
+    border:'1px solid var(--input-border)',
+    borderRadius:'8px',
+    color:'var(--text-primary)',
+    fontSize:'0.88rem',
+    fontFamily:'JetBrains Mono, monospace',
+    outline:'none',
+    transition:'border-color 0.25s, box-shadow 0.25s',
+    boxSizing:'border-box',
+  };
+
+  const labelStyle = {
+    color:'var(--text-secondary)', 
+    fontSize:'0.72rem', 
+    fontWeight:600, 
+    marginBottom:'0.3rem', 
+    display:'block', 
+    textTransform:'uppercase', 
+    letterSpacing:'1.5px',
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '#050505',
+      flexDirection: 'column',
+      background: 'var(--bg)',
       padding: '1rem',
+      transition: 'background 0.4s ease',
     }}>
+      {/* Theme toggle */}
+      <button 
+        onClick={toggle}
+        className="theme-toggle"
+        style={{position:'absolute', top:'1rem', right:'1rem'}}
+        data-testid="auth-theme-toggle"
+        title={isDark ? 'Mode jour' : 'Mode nuit'}
+      >
+        <i className={isDark ? 'fas fa-sun' : 'fas fa-moon'}></i>
+      </button>
+
       <div style={{
-        background: 'rgba(10, 10, 10, 0.7)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        borderRadius: '16px',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.37)',
+        background: 'var(--glass-bg)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        border: 'var(--glass-border)',
+        borderRadius: '14px',
+        boxShadow: 'var(--glass-shadow)',
         padding: '2rem',
         width: '100%',
-        maxWidth: '400px',
+        maxWidth: '380px',
         animation: 'fadeSlideUp 0.5s ease forwards',
+        transition: 'background 0.4s ease, box-shadow 0.4s ease',
       }} data-testid="auth-card">
         
-        <div style={{textAlign:'center', marginBottom:'2rem'}}>
+        <div style={{textAlign:'center', marginBottom:'1.75rem'}}>
           <h1 style={{
-            fontSize:'1.8rem',
+            fontSize:'1.6rem',
             fontWeight:700,
-            background:'linear-gradient(135deg, #00F0FF, #00c4cc)',
-            WebkitBackgroundClip:'text',
-            WebkitTextFillColor:'transparent',
-            backgroundClip:'text',
+            color:'var(--text-primary)',
             margin:0,
-            letterSpacing:'2px',
+            letterSpacing:'3px',
+            fontFamily:'Manrope, sans-serif',
           }}>
-            <i className="fas fa-map-marked-alt" style={{marginRight:'8px', WebkitTextFillColor:'inherit'}}></i>
             MapTDP
           </h1>
-          <p style={{color:'#A0A0A0', fontSize:'0.85rem', marginTop:'0.5rem'}}>
+          <p style={{color:'var(--text-secondary)', fontSize:'0.8rem', marginTop:'0.4rem', letterSpacing:'0.5px'}}>
             {isLogin ? 'Connectez-vous pour continuer' : 'Créez votre compte'}
           </p>
         </div>
@@ -71,132 +108,104 @@ function AuthPage() {
         {/* Tabs */}
         <div style={{
           display:'flex', 
-          marginBottom:'1.5rem', 
-          borderBottom:'1px solid rgba(255,255,255,0.1)',
+          marginBottom:'1.25rem', 
+          borderBottom:'1px solid var(--border-color)',
         }}>
           <button
             onClick={() => {setIsLogin(true); setError('');}}
             style={{
               flex:1, 
-              padding:'0.6rem',
+              padding:'0.55rem',
               background:'transparent',
               border:'none',
-              borderBottom: isLogin ? '2px solid #00F0FF' : '2px solid transparent',
-              color: isLogin ? '#00F0FF' : '#A0A0A0',
+              borderBottom: isLogin ? '2px solid var(--accent)' : '2px solid transparent',
+              color: isLogin ? 'var(--text-primary)' : 'var(--text-secondary)',
               fontWeight:600,
-              fontSize:'0.9rem',
+              fontSize:'0.82rem',
               cursor:'pointer',
-              transition:'all 0.3s',
+              transition:'all 0.25s',
               fontFamily:'Manrope, sans-serif',
+              letterSpacing:'0.5px',
             }}
             data-testid="auth-tab-login"
           >
-            <i className="fas fa-sign-in-alt" style={{marginRight:'6px'}}></i>
+            <i className="fas fa-sign-in-alt" style={{marginRight:'5px', fontSize:'0.75rem'}}></i>
             Connexion
           </button>
           <button
             onClick={() => {setIsLogin(false); setError('');}}
             style={{
               flex:1,
-              padding:'0.6rem',
+              padding:'0.55rem',
               background:'transparent',
               border:'none',
-              borderBottom: !isLogin ? '2px solid #00F0FF' : '2px solid transparent',
-              color: !isLogin ? '#00F0FF' : '#A0A0A0',
+              borderBottom: !isLogin ? '2px solid var(--accent)' : '2px solid transparent',
+              color: !isLogin ? 'var(--text-primary)' : 'var(--text-secondary)',
               fontWeight:600,
-              fontSize:'0.9rem',
+              fontSize:'0.82rem',
               cursor:'pointer',
-              transition:'all 0.3s',
+              transition:'all 0.25s',
               fontFamily:'Manrope, sans-serif',
+              letterSpacing:'0.5px',
             }}
             data-testid="auth-tab-register"
           >
-            <i className="fas fa-user-plus" style={{marginRight:'6px'}}></i>
+            <i className="fas fa-user-plus" style={{marginRight:'5px', fontSize:'0.75rem'}}></i>
             Inscription
           </button>
         </div>
 
         {error && (
           <div style={{
-            padding:'0.6rem 1rem',
-            background:'rgba(255,59,48,0.1)',
-            border:'1px solid rgba(255,59,48,0.3)',
+            padding:'0.5rem 0.9rem',
+            background:'rgba(229,80,80,0.08)',
+            border:'1px solid rgba(229,80,80,0.2)',
             borderRadius:'8px',
-            color:'#FF3B30',
-            fontSize:'0.85rem',
-            marginBottom:'1rem',
+            color:'var(--danger)',
+            fontSize:'0.82rem',
+            marginBottom:'0.9rem',
             textAlign:'center',
           }} data-testid="auth-error">
-            <i className="fas fa-exclamation-circle" style={{marginRight:'6px'}}></i>
+            <i className="fas fa-exclamation-circle" style={{marginRight:'5px'}}></i>
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
           {!isLogin && (
-            <div style={{marginBottom:'1rem'}}>
-              <label style={{color:'#A0A0A0', fontSize:'0.8rem', fontWeight:600, marginBottom:'0.3rem', display:'block', textTransform:'uppercase', letterSpacing:'1px'}}>
-                Nom
-              </label>
+            <div style={{marginBottom:'0.9rem'}}>
+              <label style={labelStyle}>Nom</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Votre nom"
                 required={!isLogin}
-                style={{
-                  width:'100%',
-                  padding:'0.75rem 1rem',
-                  background:'rgba(0,0,0,0.3)',
-                  border:'1px solid rgba(255,255,255,0.1)',
-                  borderRadius:'8px',
-                  color:'#fff',
-                  fontSize:'0.9rem',
-                  fontFamily:'JetBrains Mono, monospace',
-                  outline:'none',
-                  transition:'border-color 0.3s, box-shadow 0.3s',
-                  boxSizing:'border-box',
-                }}
-                onFocus={(e) => {e.target.style.borderColor='#00F0FF'; e.target.style.boxShadow='0 0 0 2px rgba(0,240,255,0.2)';}}
-                onBlur={(e) => {e.target.style.borderColor='rgba(255,255,255,0.1)'; e.target.style.boxShadow='none';}}
+                style={inputStyle}
+                onFocus={(e) => {e.target.style.borderColor='var(--input-focus-border)'; e.target.style.boxShadow='var(--input-focus-shadow)';}}
+                onBlur={(e) => {e.target.style.borderColor='var(--input-border)'; e.target.style.boxShadow='none';}}
                 data-testid="auth-username-input"
               />
             </div>
           )}
 
-          <div style={{marginBottom:'1rem'}}>
-            <label style={{color:'#A0A0A0', fontSize:'0.8rem', fontWeight:600, marginBottom:'0.3rem', display:'block', textTransform:'uppercase', letterSpacing:'1px'}}>
-              Email
-            </label>
+          <div style={{marginBottom:'0.9rem'}}>
+            <label style={labelStyle}>Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="votre@email.com"
               required
-              style={{
-                width:'100%',
-                padding:'0.75rem 1rem',
-                background:'rgba(0,0,0,0.3)',
-                border:'1px solid rgba(255,255,255,0.1)',
-                borderRadius:'8px',
-                color:'#fff',
-                fontSize:'0.9rem',
-                fontFamily:'JetBrains Mono, monospace',
-                outline:'none',
-                transition:'border-color 0.3s, box-shadow 0.3s',
-                boxSizing:'border-box',
-              }}
-              onFocus={(e) => {e.target.style.borderColor='#00F0FF'; e.target.style.boxShadow='0 0 0 2px rgba(0,240,255,0.2)';}}
-              onBlur={(e) => {e.target.style.borderColor='rgba(255,255,255,0.1)'; e.target.style.boxShadow='none';}}
+              style={inputStyle}
+              onFocus={(e) => {e.target.style.borderColor='var(--input-focus-border)'; e.target.style.boxShadow='var(--input-focus-shadow)';}}
+              onBlur={(e) => {e.target.style.borderColor='var(--input-border)'; e.target.style.boxShadow='none';}}
               data-testid="auth-email-input"
             />
           </div>
 
-          <div style={{marginBottom:'1.5rem'}}>
-            <label style={{color:'#A0A0A0', fontSize:'0.8rem', fontWeight:600, marginBottom:'0.3rem', display:'block', textTransform:'uppercase', letterSpacing:'1px'}}>
-              Mot de passe
-            </label>
+          <div style={{marginBottom:'1.25rem'}}>
+            <label style={labelStyle}>Mot de passe</label>
             <input
               type="password"
               value={password}
@@ -204,21 +213,9 @@ function AuthPage() {
               placeholder="Minimum 6 caractères"
               required
               minLength={6}
-              style={{
-                width:'100%',
-                padding:'0.75rem 1rem',
-                background:'rgba(0,0,0,0.3)',
-                border:'1px solid rgba(255,255,255,0.1)',
-                borderRadius:'8px',
-                color:'#fff',
-                fontSize:'0.9rem',
-                fontFamily:'JetBrains Mono, monospace',
-                outline:'none',
-                transition:'border-color 0.3s, box-shadow 0.3s',
-                boxSizing:'border-box',
-              }}
-              onFocus={(e) => {e.target.style.borderColor='#00F0FF'; e.target.style.boxShadow='0 0 0 2px rgba(0,240,255,0.2)';}}
-              onBlur={(e) => {e.target.style.borderColor='rgba(255,255,255,0.1)'; e.target.style.boxShadow='none';}}
+              style={inputStyle}
+              onFocus={(e) => {e.target.style.borderColor='var(--input-focus-border)'; e.target.style.boxShadow='var(--input-focus-shadow)';}}
+              onBlur={(e) => {e.target.style.borderColor='var(--input-border)'; e.target.style.boxShadow='none';}}
               data-testid="auth-password-input"
             />
           </div>
@@ -228,29 +225,29 @@ function AuthPage() {
             disabled={loading}
             style={{
               width:'100%',
-              padding:'0.75rem',
-              background: loading ? 'rgba(0,240,255,0.05)' : 'rgba(0,240,255,0.15)',
-              border:'1px solid #00F0FF',
+              padding:'0.7rem',
+              background: loading ? 'var(--accent-subtle)' : 'var(--accent-subtle)',
+              border:'1px solid var(--btn-border)',
               borderRadius:'8px',
-              color:'#00F0FF',
-              fontSize:'0.9rem',
+              color:'var(--text-primary)',
+              fontSize:'0.85rem',
               fontWeight:700,
               textTransform:'uppercase',
               letterSpacing:'1px',
               cursor: loading ? 'wait' : 'pointer',
-              transition:'all 0.3s',
+              transition:'all 0.25s',
               fontFamily:'Manrope, sans-serif',
             }}
-            onMouseEnter={(e) => {if(!loading){e.target.style.background='rgba(0,240,255,0.25)'; e.target.style.boxShadow='0 0 15px rgba(0,240,255,0.3)'; e.target.style.color='#fff';}}}
-            onMouseLeave={(e) => {e.target.style.background='rgba(0,240,255,0.15)'; e.target.style.boxShadow='none'; e.target.style.color='#00F0FF';}}
+            onMouseEnter={(e) => {if(!loading){e.target.style.background='var(--btn-hover-bg)'; e.target.style.boxShadow='var(--accent-glow)';}}}
+            onMouseLeave={(e) => {e.target.style.background='var(--accent-subtle)'; e.target.style.boxShadow='none';}}
             data-testid="auth-submit-button"
           >
             {loading ? (
-              <span><i className="fas fa-spinner fa-spin" style={{marginRight:'6px'}}></i>Chargement...</span>
+              <span><i className="fas fa-spinner fa-spin" style={{marginRight:'5px'}}></i>Chargement...</span>
             ) : isLogin ? (
-              <span><i className="fas fa-sign-in-alt" style={{marginRight:'6px'}}></i>Se connecter</span>
+              <span><i className="fas fa-sign-in-alt" style={{marginRight:'5px'}}></i>Se connecter</span>
             ) : (
-              <span><i className="fas fa-user-plus" style={{marginRight:'6px'}}></i>S'inscrire</span>
+              <span><i className="fas fa-user-plus" style={{marginRight:'5px'}}></i>S'inscrire</span>
             )}
           </button>
         </form>

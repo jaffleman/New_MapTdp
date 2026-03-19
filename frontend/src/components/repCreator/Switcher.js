@@ -22,8 +22,8 @@ class Switcher extends React.Component{
                                 const num = elem.number>9?elem.number:`0${elem.number}`
                                 const isActive = number===elem.number
                                 const style = isActive
-                                  ? {backgroundColor:"rgba(0,240,255,0.2)", color:"var(--accent)", borderColor:"var(--accent)"}
-                                  : {backgroundColor:"rgba(0,0,0,0.3)", color:"var(--text-secondary)", borderColor:"var(--border-color)"}
+                                  ? {backgroundColor:"var(--accent-subtle)", color:"var(--text-primary)", borderColor:"var(--accent)"}
+                                  : {backgroundColor:"var(--input-bg)", color:"var(--text-secondary)", borderColor:"var(--border-color)"}
                                 return <Button 
                                   size="sm" 
                                   key={`${id}ferme${elem.number}`} 

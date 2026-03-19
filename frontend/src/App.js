@@ -8,6 +8,7 @@ import Shower from './components/showerComponent/Shower'
 import MapTdpHeader from './components/MapTdpTitle';
 import Displayer from './components/repCreator/Displayer';
 import { AuthProvider, AuthContext } from './components/AuthContext';
+import { ThemeProvider } from './components/ThemeContext';
 import AuthPage from './components/AuthPage';
 
 function AppContent() {
@@ -20,7 +21,7 @@ function AppContent() {
         display:'flex', 
         alignItems:'center', 
         justifyContent:'center',
-        background:'#050505',
+        background:'var(--bg)',
       }}>
         <div className="spinner-border" role="status">
           <span className="sr-only">Chargement...</span>
@@ -58,9 +59,11 @@ function AppContent() {
 class App extends React.Component {
   render(){
     return (
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </ThemeProvider>
     );    
   }
 }

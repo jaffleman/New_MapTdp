@@ -16,8 +16,8 @@ class LastSearch extends React.Component{
     searchList= ()=>{
         const items = this.getRep(this.localSto.getTdps());
         if (items.length === 0) {
-            return <div style={{padding:'1rem', textAlign:'center', color:'var(--text-secondary)', fontSize:'0.85rem'}}>
-                <i className="fas fa-inbox" style={{fontSize:'1.5rem', marginBottom:'0.5rem', display:'block', opacity:0.5}}></i>
+            return <div style={{padding:'0.9rem', textAlign:'center', color:'var(--text-secondary)', fontSize:'0.82rem'}}>
+                <i className="fas fa-inbox" style={{fontSize:'1.3rem', marginBottom:'0.4rem', display:'block', opacity:0.4}}></i>
                 Aucune recherche récente
             </div>
         }

@@ -87,7 +87,7 @@ const Accueil = (props) => {
                         onChange={e=>handleSwitchChange(e)} 
                         checked={checked} 
                         disabled={url}
-                        onColor="#00F0FF"
+                        onColor="#555"
                         offColor="#333"
                         handleDiameter={20}
                         height={24}
