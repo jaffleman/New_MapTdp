@@ -1,6 +1,6 @@
 image:
   repository: docker.io/jaffleman971/maptdp-db
-  tag: "16.14" # adapte (ex: 16.10-2026-03-15)
+  tag: "16.12" # adapte (ex: 16.10-2026-03-15)
   pullPolicy: IfNotPresent
 postgres:
   # IMPORTANT : crée le rôle extjaff + mot de passe via Secret
@@ -37,5 +37,5 @@ networkPolicy:
 imagePullSecrets: []
 db:
   image:
-    tag: "16.13"
+    tag: "16.12"
     repository: docker.io/jaffleman971/maptdp-db
