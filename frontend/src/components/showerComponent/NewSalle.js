@@ -5,9 +5,12 @@ const NewSalle = (props) => {
     const tabRco = []
     payload.forEach(tdp => tabRco.findIndex(rco => rco === tdp.rco) === -1? tabRco.push(tdp.rco):null)
     const next = () => tabRco.map((rco, key) => <NewRco key={key} name={rco} payload={payload.filter((tdp)=>tdp.rco===rco)}/>)
-    return <div className='main' style={{color:'yellow'}}>
-            <h4 className="tdpHead salle">Salle: {name===undefined?"?":name}</h4>
-            <div className='main salleContent'>
+    return <div className='main' data-testid={`salle-section-${name}`}>
+            <h4 className="tdpHead salle">
+              <i className="fas fa-door-open" style={{marginRight:'6px'}}></i>
+              Salle: {name===undefined?"?":name}
+            </h4>
+            <div className='salleContent'>
                 {next()}
             </div>
         </div>

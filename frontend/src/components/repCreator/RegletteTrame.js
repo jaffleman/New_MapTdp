@@ -45,13 +45,18 @@ class RegletteTrame extends React.Component{
     render(){
 
         return (
-            <div className='RegletteConstructor'>
+            <div className='RegletteConstructor' data-testid="reglette-trame">
                 <div>
-                    <h5><span className="badge badge-secondary">Trame</span></h5>
+                    <h5 style={{margin:0}}>
+                      <span className="badge badge-secondary" style={{fontSize:'0.7rem'}}>
+                        <i className="fas fa-grip-lines" style={{marginRight:'3px'}}></i>
+                        Trame
+                      </span>
+                    </h5>
                 </div>
                 
-                <div style={{marginLeft:'40px'}}>
-                    <select id="headTrame" ref={this.headTrameRef} className="custom-select custom-select-sm" style={{textAlign:"right"}} onChange={this.HeadHandleChange.bind(this)} >
+                <div>
+                    <select id="headTrame" ref={this.headTrameRef} className="custom-select custom-select-sm" onChange={this.HeadHandleChange.bind(this)} data-testid="trame-type-select">
                         <option value="x" defaultValue></option>
                         <option value="L/INX">L/INX</option>
                         <option value="R/DEG">R/DEG</option>
@@ -59,17 +64,17 @@ class RegletteTrame extends React.Component{
                         <option value="A/TEL">A/TEL</option>
                     </select>
                 </div>
-                |===|
-                <div style={{marginLeft:'10px', width:'70px'}}>
-                    <select id="endTrame" ref={this.endTrameRef} className="custom-select custom-select-sm" onChange={this.EndHandleChange.bind(this)} style={{}}>
+                <span style={{color:'var(--text-secondary)', fontFamily:'var(--font-mono)'}}>|===|</span>
+                <div style={{width:'70px'}}>
+                    <select id="endTrame" ref={this.endTrameRef} className="custom-select custom-select-sm" onChange={this.EndHandleChange.bind(this)} data-testid="trame-option-select">
                         <option value="x"></option>
                         <option value="null">Aucun</option>
                         <option value="I">Inversée</option>
                         <option value="TNI">Tête Non Isolable</option>
                     </select>
                 </div> 
-                <Button variant="danger" style={{marginLeft:'15px'}} size="sm" onClick={this.deleteHandleClick.bind(this)}>
-                    x
+                <Button variant="danger" size="sm" onClick={this.deleteHandleClick.bind(this)} data-testid="trame-delete-btn">
+                    <i className="fas fa-times"></i>
                 </Button>              
             </div>
         )

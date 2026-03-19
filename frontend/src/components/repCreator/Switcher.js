@@ -11,18 +11,34 @@ class Switcher extends React.Component{
         const {number, back, next, fermes, handleClick,id} = this.props 
         const nextOrPlus = this.props.number === this.props.total? " + " : ">"
         return (
-            <div style={{marginTop:'5px'}}>
+            <div style={{marginTop:'0.5rem'}} data-testid="ferme-switcher">
                 <Container fluid>
-                    <Row style={{padding:"0px", marginLeft:'0px',marginRight:'0px'}}>
-                        <Button size="sm" onClick={back}>{'<'}</Button>
-                        <Col xs={10} style={{padding:"0px", marginLeft:'0px',marginRight:'0px'}}>{
+                    <Row style={{padding:"0px", marginLeft:'0px',marginRight:'0px', alignItems:'center'}}>
+                        <Button size="sm" onClick={back} data-testid="ferme-prev-btn" style={{minWidth:'32px'}}>
+                          <i className="fas fa-chevron-left"></i>
+                        </Button>
+                        <Col style={{padding:"0px", marginLeft:'0px',marginRight:'0px', display:'flex', flexWrap:'wrap', justifyContent:'center'}}>{
                             fermes.map((elem)=>{
                                 const num = elem.number>9?elem.number:`0${elem.number}`
-                                const style = number===elem.number?{backgroundColor:"#e46b50",color:"black"}:{backgroundColor:"white",color:"black"}
-                                return <Button size="sm" key={`${id}ferme${elem.number}`} className={`buttonFerme ${elem.number}`} style={style} type="button" onClick={()=>handleClick(elem.index)}>{num}</Button>
+                                const isActive = number===elem.number
+                                const style = isActive
+                                  ? {backgroundColor:"rgba(0,240,255,0.2)", color:"var(--accent)", borderColor:"var(--accent)"}
+                                  : {backgroundColor:"rgba(0,0,0,0.3)", color:"var(--text-secondary)", borderColor:"var(--border-color)"}
+                                return <Button 
+                                  size="sm" 
+                                  key={`${id}ferme${elem.number}`} 
+                                  className={`buttonFerme ${elem.number}`} 
+                                  style={style} 
+                                  type="button" 
+                                  onClick={()=>handleClick(elem.index)}
+                                  data-testid={`ferme-btn-${elem.number}`}>
+                                  {num}
+                                </Button>
                             }) 
                         }</Col>
-                        <Button size="sm" onClick={next}>{nextOrPlus}</Button>
+                        <Button size="sm" onClick={next} data-testid="ferme-next-btn" style={{minWidth:'32px'}}>
+                          <i className="fas fa-chevron-right"></i>
+                        </Button>
                     </Row>
                 </Container>
             </div>

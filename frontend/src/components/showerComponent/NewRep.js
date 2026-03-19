@@ -6,8 +6,11 @@ const NewRep = (props) => {
     const tabSalle = []
     payload.forEach(tdp => tabSalle.findIndex(salle => salle === tdp.salle) === -1? tabSalle.push(tdp.salle):null)
     const next= ()=>tabSalle.map((salle, key) => <NewSalle key={key} name={salle} payload={payload.filter((tdp)=>tdp.salle===salle)}/>)
-    return <div className='main' style={{color:'white'}}>
-                <h3 className="tdpHead rep">REPARTITEUR DE {name}</h3>
+    return <div className='main' data-testid={`rep-section-${name}`}>
+                <h3 className="tdpHead rep">
+                  <i className="fas fa-server" style={{marginRight:'8px'}}></i>
+                  REPARTITEUR DE {name}
+                </h3>
                 {next()}
             </div>
 }

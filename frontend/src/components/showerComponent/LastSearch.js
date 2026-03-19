@@ -13,7 +13,28 @@ class LastSearch extends React.Component{
             return [rep, matchTdp.length]
         })
     }
-    searchList= ()=>{return this.getRep(this.localSto.getTdps()).map((repTab, key)=>{ return <Button key={key} variant="primary" size="sm" block onClick={()=>this.handleClick(repTab[0])}>{repTab[0]+' : '+repTab[1]+'tdp'}</Button>})}
+    searchList= ()=>{
+        const items = this.getRep(this.localSto.getTdps());
+        if (items.length === 0) {
+            return <div style={{padding:'1rem', textAlign:'center', color:'var(--text-secondary)', fontSize:'0.85rem'}}>
+                <i className="fas fa-inbox" style={{fontSize:'1.5rem', marginBottom:'0.5rem', display:'block', opacity:0.5}}></i>
+                Aucune recherche récente
+            </div>
+        }
+        return items.map((repTab, key)=> {
+            return <Button 
+                key={key} 
+                variant="primary" 
+                size="sm" 
+                block 
+                onClick={()=>this.handleClick(repTab[0])}
+                data-testid={`last-search-item-${key}`}
+                style={{textAlign:'left'}}>
+                <i className="fas fa-chevron-right" style={{marginRight:'8px', fontSize:'0.7rem', opacity:0.6}}></i>
+                {repTab[0]+' : '+repTab[1]+' tdp'}
+            </Button>
+        })
+    }
     handleClick=(rep)=>{
         const list =[];
         this.localSto.getTdps().forEach((tdp)=>{if(tdp.rep===rep)list.push(tdp)});
@@ -21,9 +42,9 @@ class LastSearch extends React.Component{
     }
     render(){
         return(
-            <> 
+            <div data-testid="last-search-list"> 
                 <this.searchList/>
-            </>
+            </div>
         )
     }
 }
