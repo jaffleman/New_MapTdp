@@ -31,37 +31,45 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.backend.service.port }}
-        env:
-          {{- if .Values.backend.env }}
-          {{- range .Values.backend.env }}
-          - name: {{ .name }}
-            value: {{ .value | quote }}
-          {{- end }}
-          {{- end }}
-        envFrom:
-          - secretRef:
-              name: maptdp-backend-env
-          {{- with .Values.backend.envFrom }}
-          {{ toYaml . | nindent 10 }}
-          {{- end }}
+
+          env:
+            {{- range .Values.backend.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+
+          envFrom:
+            - secretRef:
+                name: maptdp-backend-env
+            {{- with .Values.backend.envFrom }}
+            {{ toYaml . | nindent 12 }}
+            {{- end }}
+
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
+
           {{- if .Values.backend.livenessProbe.enabled }}
           livenessProbe:
-            httpGet: { path: {{ .Values.backend.livenessProbe.path }}, port: http }
+            httpGet: 
+              path: {{ .Values.backend.livenessProbe.path }}
+              port: http
             initialDelaySeconds: {{ .Values.backend.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.backend.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.backend.livenessProbe.timeoutSeconds }}
             failureThreshold: {{ .Values.backend.livenessProbe.failureThreshold }}
           {{- end }}
+
           {{- if .Values.backend.readinessProbe.enabled }}
           readinessProbe:
-            httpGet: { path: {{ .Values.backend.readinessProbe.path }}, port: http }
+            httpGet: 
+              path: {{ .Values.backend.readinessProbe.path }}
+              port: http
             initialDelaySeconds: {{ .Values.backend.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.backend.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.backend.readinessProbe.timeoutSeconds }}
             failureThreshold: {{ .Values.backend.readinessProbe.failureThreshold }}
           {{- end }}
+
       nodeSelector:
         {{- toYaml .Values.backend.nodeSelector | nindent 8 }}
       affinity:
