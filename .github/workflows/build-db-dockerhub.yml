@@ -11,7 +11,7 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: jaffleman971/maptdp-db
-  TAG: "16.11"
+  TAG: "16.12"
 
 jobs:
   build:
