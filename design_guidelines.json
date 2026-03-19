@@ -1,0 +1,126 @@
+{
+  "design_system": {
+    "typography": {
+      "primary": "Manrope, sans-serif",
+      "secondary": "JetBrains Mono, monospace",
+      "weights": {
+        "light": 300,
+        "regular": 400,
+        "bold": 700
+      },
+      "sizes": {
+        "h1": "2rem",
+        "h2": "1.5rem",
+        "body": "1rem",
+        "small": "0.875rem"
+      }
+    },
+    "colors": {
+      "background": "#050505",
+      "surface": "rgba(20, 20, 20, 0.6)",
+      "surface_highlight": "rgba(255, 255, 255, 0.05)",
+      "border": "rgba(255, 255, 255, 0.1)",
+      "text_primary": "#FFFFFF",
+      "text_secondary": "#A0A0A0",
+      "accent": "#00F0FF",
+      "accent_glow": "0 0 10px rgba(0, 240, 255, 0.5)",
+      "danger": "#FF3B30",
+      "success": "#34C759",
+      "warning": "#FFD60A"
+    },
+    "glassmorphism": {
+      "backdrop_filter": "blur(12px)",
+      "border": "1px solid rgba(255, 255, 255, 0.08)",
+      "background": "rgba(10, 10, 10, 0.7)",
+      "shadow": "0 8px 32px 0 rgba(0, 0, 0, 0.37)"
+    },
+    "layout": {
+      "container_max_width": "1200px",
+      "mobile_padding": "1rem",
+      "desktop_padding": "2rem",
+      "grid_gap": "1.5rem",
+      "border_radius": "16px"
+    },
+    "animation": {
+      "transition_speed": "0.3s",
+      "hover_transform": "translateY(-2px)",
+      "active_transform": "scale(0.98)"
+    }
+  },
+  "components": {
+    "MyCard": {
+      "description": "Main container card. Needs to lose fixed width and gain glassmorphism style.",
+      "css_rules": {
+        "background": "var(--glass-bg)",
+        "backdrop-filter": "var(--glass-blur)",
+        "border": "var(--glass-border)",
+        "border-radius": "16px",
+        "box-shadow": "var(--glass-shadow)",
+        "color": "var(--text-primary)",
+        "width": "100%",
+        "max-width": "100%"
+      }
+    },
+    "Bando-Titre": {
+      "description": "Header inside cards. Needs to be transparent with accent underline instead of block color.",
+      "css_rules": {
+        "background": "transparent",
+        "color": "var(--accent-color)",
+        "font-family": "var(--font-primary)",
+        "font-weight": "700",
+        "text-transform": "uppercase",
+        "letter-spacing": "1px",
+        "border-bottom": "1px solid var(--border-color)",
+        "box-shadow": "none",
+        "margin-bottom": "1rem"
+      }
+    },
+    "Button": {
+      "description": "Global button styling override.",
+      "css_rules": {
+        "background": "transparent",
+        "border": "1px solid var(--accent-color)",
+        "color": "var(--accent-color)",
+        "border-radius": "8px",
+        "transition": "all 0.3s ease",
+        "text-transform": "uppercase",
+        "font-weight": "600",
+        "font-size": "0.875rem",
+        "padding": "0.5rem 1rem"
+      },
+      "hover_state": {
+        "background": "rgba(0, 240, 255, 0.1)",
+        "box-shadow": "0 0 15px rgba(0, 240, 255, 0.3)",
+        "color": "#fff"
+      }
+    },
+    "Input": {
+      "description": "Textarea and inputs.",
+      "css_rules": {
+        "background": "rgba(0, 0, 0, 0.3)",
+        "border": "1px solid var(--border-color)",
+        "color": "var(--text-primary)",
+        "border-radius": "8px",
+        "padding": "1rem",
+        "font-family": "var(--font-secondary)"
+      },
+      "focus_state": {
+        "border-color": "var(--accent-color)",
+        "box-shadow": "0 0 0 2px rgba(0, 240, 255, 0.2)",
+        "outline": "none"
+      }
+    }
+  },
+  "assets": {
+    "fonts": [
+      "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    ]
+  },
+  "instructions_to_main_agent": "1. Replace App.css content entirely with new CSS variables and component styles. 2. Update index.html to include Google Fonts. 3. Do not modify React logic unless necessary for responsiveness (removing inline styles). 4. Ensure .modal-content overrides Bootstrap styles to match the dark theme.",
+  "universal_guidelines": [
+    "Use CSS variables for all colors and spacing.",
+    "Prioritize mobile responsiveness - use media queries to adjust padding/font-size.",
+    "Ensure high contrast for text accessibility.",
+    "Add subtle hover effects to all interactive elements."
+  ]
+}
