@@ -84,6 +84,8 @@ CREATE DATABASE geolockbdd WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PR
 
 ALTER DATABASE geolockbdd OWNER TO postgres;
 
+\connect geolockbdd
+
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
