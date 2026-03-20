@@ -193,7 +193,7 @@ INSERT INTO acces (id, type, code, mk) VALUES
 (28, 'Bâtiment ', '2357', 25),
 (29, 'Bâtiment ', 'B2703', 26),
 (30, 'Grille ', 'B2703', 26),
-(31, 'Bâtiment 🏢 ', '7458', 27)
+(31, 'Bâtiment 🏢 ', '7458', 27),
 (32, '2ème Porte', '5628', 27),
 (33, '2eme porte', '5628', 27),
 (34, 'Barrière ', 'INCO', 28),
@@ -222,7 +222,7 @@ INSERT INTO acces (id, type, code, mk) VALUES
 (57, '2eme porte ', '2859', 46),
 (58, 'Bâtiment 🏢 ', '1845', 47),
 (59, 'Barrière ', 'INCO', 48),
-(60, 'Bâtiment 🏢 ', 'INCO', 48)
+(60, 'Bâtiment 🏢 ', 'INCO', 48),
 (61, 'Barrière ', 'INCO', 49),
 (62, 'Bâtiment 🏢 ', 'INCO', 49),
 (63, 'Portillon noir', '4994A', 50),
