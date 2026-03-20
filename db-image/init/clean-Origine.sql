@@ -537,6 +537,7 @@ CREATE DATABASE maptdpbdd WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PRO
 
 ALTER DATABASE maptdpbdd OWNER TO postgres;
 
+\connect maptdpbdd
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
