@@ -33,6 +33,6 @@ networkPolicy:
 imagePullSecrets: []
 db:
   image:
-    tag: "16.19"
+    tag: "16.20"
     repository: docker.io/jaffleman971/maptdp-db
     pullPolicy: IfNotPresent
