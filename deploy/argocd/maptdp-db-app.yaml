@@ -3,6 +3,15 @@ kind: Application
 metadata:
   name: maptdp-db
   namespace: argocd
+  metadata:
+    annotations:
+      argocd-image-updater.argoproj.io/image-list: db=docker.io/jaffleman971/maptdp-db
+      argocd-image-updater.argoproj.io/db.update-strategy: semver
+      argocd-image-updater.argoproj.io/db.allow-tags: regexp:^([0-9]+\.[0-9]+|v?[0-9]+\.[0-9]+\.[0-9]+)$
+      argocd-image-updater.argoproj.io/db.ignore-tags: latest
+      argocd-image-updater.argoproj.io/write-back-method: helm
+
+
 spec:
   project: default
   source:
