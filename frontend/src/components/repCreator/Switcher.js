@@ -9,7 +9,7 @@ class Switcher extends React.Component{
   
     render(){
         const {number, back, next, fermes, handleClick,id} = this.props 
-        const nextOrPlus = this.props.number === this.props.total? " + " : ">"
+        // const nextOrPlus = this.props.number === this.props.total? " + " : ">"
         return (
             <div style={{marginTop:'0.5rem'}} data-testid="ferme-switcher">
                 <Container fluid>
