@@ -1,6 +1,6 @@
 postgres:
   # IMPORTANT : crée le rôle extjaff + mot de passe via Secret
-  # user: "postgres"
+  user: "postgres"
   passwordSecretName: "maptdp-db-auth" # Secret à créer (ou via template secret.yaml)
   passwordSecretKey: "password"
   # Laisse postgres comme DB de bootstrap ; le dump crée maptdpbdd
