@@ -294,3 +294,6 @@ notes.md
 allow-db-from-all-temporary2.yaml
 allow-db-from-all-temporary.yaml
 maptdp-backend-egress-to-db.yaml
+output.sql
+prog.py
+source.txt
