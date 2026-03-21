@@ -1,6 +1,6 @@
 frontend:
   image:
-    tag: "v0.1.0"
+    tag: "v2.0.0"
   ingress:
     host: "tdp.jaffleman.tech"
   runtimeConfig:
@@ -9,7 +9,7 @@ frontend:
 backend:
   replicaCount: 2
   image:
-    tag: "v0.1.0"
+    tag: "v2.0.0"
   ingress:
     host: "api.jaffleman.tech"
     path: /
