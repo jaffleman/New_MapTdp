@@ -12,25 +12,30 @@ class DisplaySalle extends React.Component{
         const {data, vButton, vRef} = this.props
         const {name,salle} = data
         return(
-            <div className="MyCard" style={{ marginBottom: '5px'}}>
-                <div className="Bando-Titre2 rounded" style={{marginBottom:"1px", }}>
-                    Repartiteur de <span style={{color:'red', textTransform:'lowerCase'}}>{name}</span>
+            <div className="MyCard" style={{marginBottom:'5px'}} data-testid="display-salle-card">
+                <div className="Bando-Titre2 rounded" style={{marginBottom:"1px"}}>
+                    <i className="fas fa-network-wired" style={{marginRight:'6px', fontSize:'0.75rem'}}></i>
+                    Repartiteur de <span style={{textTransform:'lowercase', marginLeft:'3px'}}>{name}</span>
                 </div>
                 <Tabs justify defaultActiveKey="salle1" id="uncontrolled-tab-example" unmountOnExit={true}>
-                    {salle.map(elem=><Tab key={"Salle"+elem.number} eventKey={`salle${elem.number}`} title={`salle${elem.number}`}>
+                    {salle.map(elem=><Tab key={"Salle"+elem.number} eventKey={`salle${elem.number}`} title={`Salle ${elem.number}`}>
                         <DisplayRco key={"rco"+elem.number} data={elem.rco} salleNumb={elem.number} validRef={vRef}/>
                     </Tab>)}
                     <Tab key={'0'} eventKey={'+'} title={'+/-'}>
                         <ItemsManager function={this.props.function}/>
                     </Tab>
                 </Tabs>
-                <div className="Bando-Titre2 rounded" style={{marginTop:"5px", }}>
-                <Button 
+                <div className="Bando-Titre2 rounded" style={{marginTop:"5px"}}>
+                  <Button 
                     type="button" 
                     className="btn btn-primary" 
                     onClick={vButton}
                     ref={vRef} 
-                    size="sm">Valider en base</Button>
+                    size="sm"
+                    data-testid="validate-db-button">
+                    <i className="fas fa-database" style={{marginRight:'6px'}}></i>
+                    Valider en base
+                  </Button>
                 </div>
             </div>
         ) 

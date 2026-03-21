@@ -12,18 +12,13 @@ import LastSearch from './showerComponent/LastSearch'
 
 import getClipboardContent from '../functions/getClipboard'
 import loader from '../functions/loaderManager'
-//import storageAvailable from '../functions/storageCheck'
 import extraireLesDonnees from '../functions/extraireLesDonnees'
 import LocalStorageManager from '../classes/LocalStorageManager'
 
 
-
-
-
-
 const Accueil = (props) => {
   const localSto = new LocalStorageManager()
-  const url = !(localSto.getIsActive() && 'credentials' in navigator) // si acces au store && https
+  const url = !(localSto.getIsActive() && 'credentials' in navigator)
   const textAreaRef = useRef()
   const history = useHistory()
   const [formValue,setFormValue] = useState('')
@@ -63,69 +58,94 @@ const Accueil = (props) => {
   }
 
   return (
-    <Container>
+    <Container data-testid="accueil-container">
       <div className='main'>
         <div className='row'>
           <div className='col-lg' style={{marginTop:'20px'}}>
-          <div className="MyCard">
-            <div className="Bando-Titre">
-              <p>TDP Search</p>
-            </div>
-            <form>
-              <textarea 
-                ref= {textAreaRef}
-                id="msg" 
-                type="text" 
-                className='cardArea'
-                name="tdp_list" rows="6"  
-                placeholder="Coller votre liste de TDP ici ou taper la position recherchée: ex: cho94 linx19127..." 
-                value={formValue} onClick={()=>handle_click()}  onChange={e=>textareaHandleChange(e)}>
-              </textarea>
-            </form>
-            <div className="Bando-Valider">
-              <Container>
-                <Row>
-                  <Col className='align-items-center'>
-                    <div style={{marginTop:'10px'}}>
-                      <Switch  onChange={e=>handleSwitchChange(e)} checked={checked} disabled={url}/>
-                    </div>
-                  </Col>
-                  <Col xs={6}><button className="btn btn-sm btn-outline-dark" type="button" onClick={()=>textareaHandleClick()}>Lancer la recherche</button></Col>
-                  <Col></Col>
-                </Row>
-              </Container>                            
+            <div className="MyCard" data-testid="search-card">
+              <div className="Bando-Titre">
+                <i className="fas fa-search" style={{marginRight:'8px'}}></i>
+                <p>TDP Search</p>
+              </div>
+              <form>
+                <textarea 
+                  ref={textAreaRef}
+                  id="msg" 
+                  type="text" 
+                  className='cardArea'
+                  name="tdp_list" rows="6"  
+                  placeholder="Coller votre liste de TDP ici ou taper la position recherchée: ex: cho94 linx19127..." 
+                  value={formValue} onClick={()=>handle_click()} onChange={e=>textareaHandleChange(e)}
+                  data-testid="search-textarea">
+                </textarea>
+              </form>
+              <div className="Bando-Valider">
+                <Container>
+                  <Row className="align-items-center">
+                    <Col xs="auto">
+                      <Switch 
+                        onChange={e=>handleSwitchChange(e)} 
+                        checked={checked} 
+                        disabled={url}
+                        onColor="#555"
+                        offColor="#333"
+                        handleDiameter={20}
+                        height={24}
+                        width={48}
+                        data-testid="auto-paste-switch"
+                      />
+                    </Col>
+                    <Col>
+                      <button 
+                        className="btn btn-sm btn-outline-dark" 
+                        type="button" 
+                        onClick={()=>textareaHandleClick()}
+                        data-testid="search-submit-button">
+                        <i className="fas fa-bolt" style={{marginRight:'6px'}}></i>
+                        Lancer la recherche
+                      </button>
+                    </Col>
+                  </Row>
+                </Container>                            
+              </div>
             </div>
           </div>
-        </div>  
 
-
-        <div className='col-lg' style={{marginTop:'20px'}}>
-          <div className="MyCard">
-            <div className="Bando-Titre">
-              <p>dernières recherches</p>
-            </div>
-            <LastSearch callback={(extractData)=>{history.push('/Shower',{'plotTab':extractData})}}/> 
-            <div className="Bando-Valider">
-              <button className="btn btn-sm btn-outline-dark" type="button" onClick={()=>clearTdpList()}>Effacer l'historique</button>                
+          <div className='col-lg' style={{marginTop:'20px'}}>
+            <div className="MyCard" data-testid="last-search-card">
+              <div className="Bando-Titre">
+                <i className="fas fa-history" style={{marginRight:'8px'}}></i>
+                <p>Dernières recherches</p>
+              </div>
+              <div style={{padding:'0.75rem'}}>
+                <LastSearch callback={(extractData)=>{history.push('/Shower',{'plotTab':extractData})}}/> 
+              </div>
+              <div className="Bando-Valider">
+                <button 
+                  className="btn btn-sm btn-outline-dark" 
+                  type="button" 
+                  onClick={()=>clearTdpList()}
+                  data-testid="clear-history-button">
+                  <i className="fas fa-trash-alt" style={{marginRight:'6px'}}></i>
+                  Effacer l'historique
+                </button>                
+              </div>
             </div>
           </div>
-        </div>
-          
-
 
           <div className='col-lg' style={{marginTop:'20px'}}>
             <Card data={{
-              title:'Création de répartiteur:',
+              title:'Création de répartiteur',
+              icon:'fa-plus-circle',
               type:'text',
-              textValue:'Le mode "création de rep" te permets d\'intégrer ton répartiteur. Une fois créé, il sera accessible par tout les utilisateurs de MapTDP. Il est important de prendre le temps d\'intégrer les répartiteurs afin de peupler la base de MapTDP et aissi faciliter la recherche des futurs TDP. Si tu souhaites intégrer un répartiteur cliques sur "GO=>"',
-              bName:'Go=>',
+              textValue:'Le mode "création de rep" te permets d\'intégrer ton répartiteur. Une fois créé, il sera accessible par tout les utilisateurs de MapTDP. Il est important de prendre le temps d\'intégrer les répartiteurs afin de peupler la base de MapTDP et ainsi faciliter la recherche des futurs TDP.',
+              bName:'Go',
               route:'/Displayer'}}/> 
           </div>
         </div>
       </div>
     </Container>
   )
-
 }   
 const mapStateToProps = (state)=>{return {mustLoad:state.mustLoad}}
 export default connect(mapStateToProps)(Accueil);

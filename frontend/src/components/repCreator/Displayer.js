@@ -97,9 +97,9 @@ class Displayer extends React.Component{
 
     render(){
         return (
-            <div>
+            <div data-testid="displayer-container" style={{paddingTop:'70px'}}>
                 <Container>
-                    <div className="input-group mb-3 bandoRepSearch">
+                    <div className="input-group mb-3 bandoRepSearch" data-testid="rep-search-bar">
                         <input 
                             type="text" 
                             className="form-control" 
@@ -108,13 +108,17 @@ class Displayer extends React.Component{
                             placeholder="Rep à créer/modifier ex:cho94" 
                             aria-label="ex:cho94" 
                             aria-describedby="button-addon2"
+                            data-testid="rep-search-input"
                         />
                         <div className="input-group-append">
                             <button 
                                 className="btn btn-primary" 
                                 ref={this.buttonOK}
                                 type="button" id="button-addon2"
-                                onClick={this.handleClick}>OK
+                                onClick={this.handleClick}
+                                data-testid="rep-search-submit">
+                                <i className="fas fa-search" style={{marginRight:'4px'}}></i>
+                                OK
                             </button>
                         </div>
                     </div>

@@ -11,7 +11,12 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// Register service worker for PWA / offline support
+serviceWorker.register({
+  onUpdate: (registration) => {
+    console.log('MapTDP: Mise à jour disponible');
+  },
+  onSuccess: (registration) => {
+    console.log('MapTDP: Prêt pour le mode hors-ligne');
+  },
+});

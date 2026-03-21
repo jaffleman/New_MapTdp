@@ -36,14 +36,18 @@ class Shower extends React.Component{
     render(){
         if ('data' in this.state.fetchedData) {
             return (
-                <div>
+                <div data-testid="shower-container" style={{paddingTop:'70px'}}>
                     <LaModal/>
                     <div className='main'>
                         {this.lister()}
                     </div>
                 </div>
             )       
-        } else return null
+        } else return <div data-testid="shower-loading" style={{paddingTop:'70px', textAlign:'center', color:'var(--text-secondary)'}}>
+          <div className="spinner-border" role="status" style={{marginTop:'2rem'}}>
+            <span className="sr-only">Chargement...</span>
+          </div>
+        </div>
     }
 }
 export default withRouter(connect()(Shower));

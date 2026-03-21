@@ -72,55 +72,61 @@ function Modal(props){
     }
     const completRegletteName = ''+regletteType+regletteNbr
     return (
-        <div className="modal fade" id="laModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog">
+        <div className="modal fade" id="laModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-testid="tdp-modal">
+            <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Créer ou Modifier...</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <h5 className="modal-title" id="exampleModalLabel">
+                          <i className="fas fa-edit" style={{marginRight:'8px'}}></i>
+                          Créer ou Modifier
+                        </h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" data-testid="modal-close-btn">
+                            <span aria-hidden="true" style={{color:'var(--text-secondary)'}}>&times;</span>
                         </button>
                     </div>
                     <div className="modal-body">
-                        <p>Merci de renseigner les infos manquantes pour cette réglette:</p>
+                        <p style={{color:'var(--text-secondary)', fontSize:'0.85rem', marginBottom:'1rem'}}>
+                          <i className="fas fa-info-circle" style={{marginRight:'6px', color:'var(--accent)'}}></i>
+                          Renseignez les infos manquantes pour cette réglette:
+                        </p>
                         <Form>
-
                             <InputGroup size="sm" className="mb-3">
                                 <InputGroup.Prepend>
-                                <InputGroup.Text id="inputGroup-sizing-sm">REPARTITEUR:</InputGroup.Text>
+                                <InputGroup.Text id="inputGroup-sizing-sm">REPARTITEUR</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" readOnly value={rep}/>
+                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" readOnly value={rep} data-testid="modal-rep-input"/>
                             </InputGroup>
                             <InputGroup size="sm" className="mb-3">
                                 <InputGroup.Prepend>
-                                <InputGroup.Text id="inputGroup-sizing-sm">Réglette:</InputGroup.Text>
+                                <InputGroup.Text id="inputGroup-sizing-sm">REGLETTE</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" readOnly value={completRegletteName}/>
+                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" readOnly value={completRegletteName} data-testid="modal-reglette-input"/>
                             </InputGroup>
                             <InputGroup size="sm" className="mb-3">
                                 <InputGroup.Prepend>
-                                <InputGroup.Text id="inputGroup-sizing-sm">Salle:</InputGroup.Text>
+                                <InputGroup.Text id="inputGroup-sizing-sm">SALLE</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" type='number' value={salle} onChange={(e)=>{salleChange(e)}}/>
+                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" type='number' value={salle} onChange={(e)=>{salleChange(e)}} data-testid="modal-salle-input"/>
                             </InputGroup>
                             <InputGroup size="sm" className="mb-3">
                                 <InputGroup.Prepend>
-                                <InputGroup.Text id="inputGroup-sizing-sm">Rco:</InputGroup.Text>
+                                <InputGroup.Text id="inputGroup-sizing-sm">RCO</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" type='number' value={rco} onChange={(e)=>{rcoChange(e)}}/>
+                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" type='number' value={rco} onChange={(e)=>{rcoChange(e)}} data-testid="modal-rco-input"/>
                             </InputGroup>
                             <InputGroup size="sm" className="mb-3">
                                 <InputGroup.Prepend>
-                                <InputGroup.Text id="inputGroup-sizing-sm">Ferme:</InputGroup.Text>
+                                <InputGroup.Text id="inputGroup-sizing-sm">FERME</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" type='number' value={ferme} onChange={(e)=>{colonneChange(e)}}/>
+                                <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" type='number' value={ferme} onChange={(e)=>{colonneChange(e)}} data-testid="modal-ferme-input"/>
                             </InputGroup>
-                            <InputGroup className="sm-3">
+                            <InputGroup className="sm-3 mb-3">
                                 <DropdownButton
                                 as={InputGroup.Prepend}
                                 variant="outline-secondary"
                                 title="Niveau"
                                 id="input-group-dropdown-1"
+                                data-testid="modal-level-dropdown"
                                 >
                                     <Dropdown.Item value="1" onSelect={()=>{positionChange(1)}}>1</Dropdown.Item>
                                     <Dropdown.Item value="2" onClick={()=>{positionChange(2)}}>2</Dropdown.Item>
@@ -131,26 +137,33 @@ function Modal(props){
                                     <Dropdown.Item value="7" onClick={()=>{positionChange(7)}}>7</Dropdown.Item>
                                     <Dropdown.Item value="8" onClick={()=>{positionChange(8)}}>8</Dropdown.Item>
                                 </DropdownButton>
-                                <FormControl aria-describedby="basic-addon1" readOnly value={level} />
+                                <FormControl aria-describedby="basic-addon1" readOnly value={level} data-testid="modal-level-input"/>
                             </InputGroup>
                             <InputGroup className="sm-3">
                                 <DropdownButton
                                 as={InputGroup.Prepend}
                                 variant="outline-secondary"
                                 title="Option"
-                                id="input-group-dropdown-1"
+                                id="input-group-dropdown-2"
+                                data-testid="modal-option-dropdown"
                                 >
                                     <Dropdown.Item value="" onSelect={()=>{OptionChange("")}}>...</Dropdown.Item>
                                     <Dropdown.Item value="I" onClick={()=>{OptionChange("I")}}>Inversée</Dropdown.Item>
                                     <Dropdown.Item value="TNI" onClick={()=>{OptionChange("TNI")}}>Non isolable</Dropdown.Item>
                                 </DropdownButton>
-                                <FormControl aria-describedby="basic-addon1" readOnly value={option(opt)} />
+                                <FormControl aria-describedby="basic-addon1" readOnly value={option(opt)} data-testid="modal-option-input"/>
                             </InputGroup>
                         </Form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={()=>closeModal()}>Annuler</button>
-                        <button type="button" className="btn btn-primary" onClick={()=>valideModal()} >Save changes</button>
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={()=>closeModal()} data-testid="modal-cancel-btn">
+                          <i className="fas fa-times" style={{marginRight:'4px'}}></i>
+                          Annuler
+                        </button>
+                        <button type="button" className="btn btn-primary" onClick={()=>valideModal()} data-testid="modal-save-btn">
+                          <i className="fas fa-save" style={{marginRight:'4px'}}></i>
+                          Sauvegarder
+                        </button>
                     </div>
                 </div>
             </div>

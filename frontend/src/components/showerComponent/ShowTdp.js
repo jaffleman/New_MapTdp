@@ -26,76 +26,78 @@ class ShowTdp extends React.Component{
     
     addToPressed = (tdp) =>{
         if (tdp.tdpId === this.props.ndToShow||!tdp.found){
-            //this.setState({pressed: [tdp.tdpId]})
             this.props.dispatch({type:'SHOW_MODAL', value:tdp})
             $(()=> window.$('#laModal').modal())
         }
     }
 
     removeFromPressed = index =>this.setState({pressed: this.state.pressed.filter(i => i !== index)});
-    //tdpCaller = (found)=>found?<FoundedTdp tdp = {this.props.tdp} />:<NotFoundedTdp tdp = {this.props.tdp} />
 
   
     render(){
         console.log(this.props.tdp)
-        const {tdpId, regletteType, regletteNbr,  option, plot, found} = this.props.tdp
+        const {tdpId, regletteType, regletteNbr, option, plot, found} = this.props.tdp
 
         const badgeElement= {
             badgeLabel:'',
-            badgeColor:''
+            badgeColor:'',
+            badgeIcon:''
         }
         if (option==='I') {
             badgeElement.badgeColor = "badge-warning";
             badgeElement.badgeLabel = "Inver"
+            badgeElement.badgeIcon = "fa-exclamation-triangle"
         }else{
             if (option==='TNI'){
                 badgeElement.badgeColor = "badge-danger";
                 badgeElement.badgeLabel = "NoIso"
+                badgeElement.badgeIcon = "fa-times-circle"
             }else{
                 badgeElement.badgeColor = "badge-success";
-                badgeElement.badgeLabel = "Ok!"                   
+                badgeElement.badgeLabel = "Ok!"
+                badgeElement.badgeIcon = "fa-check-circle"
             }
         }
         if (found){
             return(
-                <div>
+                <div data-testid={`tdp-item-${tdpId}`}>
                     <LongPress
                         key={tdpId}
                         time={500}
                         onLongPress={() => this.addToPressed(this.props.tdp)}
                         onPress={() => this.removeFromPressed(tdpId)}
                         > 
-                        <div className = {`tdp ${this.styler(tdpId)}`} onClick = {()=>{this._toggleView(tdpId)}}>
-                        <div style={{display:'flex' }}>
-                            <p style={{margin:'0'}}>{}</p>
-                            <p style={{flex:10}} className = "tdp2"> {regletteType+regletteNbr}-{plot}</p>
-                            <span className ={`badge badge-pill ${badgeElement.badgeColor}`}>{badgeElement.badgeLabel}</span>
+                        <div className={`tdp ${this.styler(tdpId)}`} onClick={()=>{this._toggleView(tdpId)}}>
+                        <div style={{display:'flex', alignItems:'center'}}>
+                            <p style={{flex:10, margin:0}} className="tdp2">{regletteType+regletteNbr}-{plot}</p>
+                            <span className={`badge badge-pill ${badgeElement.badgeColor}`}>
+                              <i className={`fas ${badgeElement.badgeIcon}`} style={{marginRight:'3px', fontSize:'0.6rem'}}></i>
+                              {badgeElement.badgeLabel}
+                            </span>
                         </div>
-                        <DeteilView data = {this.props.tdp}/>
+                        <DeteilView data={this.props.tdp}/>
                     </div> 
                     </LongPress>
                 </div>
             )
         }else{
-             
             return(
-                <div>
+                <div data-testid={`tdp-item-notfound-${tdpId}`}>
                     <LongPress
                         key={tdpId}
                         time={500}
                         onLongPress={() => this.addToPressed(this.props.tdp)}
                         onPress={() => this.removeFromPressed(tdpId)}
                         > 
-                        <div className ="tdp Letes3" onClick = {()=>{}}>
-                            <div style={{display:'flex' }}>
-                                <p style={{margin:'0'}}>{"what!"}</p>
-                                <p style={{flex:10}} className = "tdp2"> {regletteType+regletteNbr}-{plot}</p>
+                        <div className="tdp Letes3" onClick={()=>{}}>
+                            <div style={{display:'flex', alignItems:'center'}}>
+                                <i className="fas fa-question-circle" style={{color:'var(--text-secondary)', marginRight:'8px'}}></i>
+                                <p style={{flex:10, margin:0}} className="tdp2">{regletteType+regletteNbr}-{plot}</p>
                             </div>
                         </div>
                     </LongPress>
                 </div>
             )
-            
         }
     }
 }

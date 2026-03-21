@@ -47,15 +47,19 @@ class RegletteConstructor extends React.Component{
             })
     }
     render(){
-        //console.log(this.props.session)
         return (
-            <div className='RegletteConstructor'>
+            <div className='RegletteConstructor' data-testid={`reglette-constructor-${this.props.nd}`}>
                 <div>
-                    <h5><span className="badge badge-secondary">Niveau {this.props.nd}</span></h5>
+                    <h5 style={{margin:0}}>
+                      <span className="badge badge-secondary" style={{fontSize:'0.7rem'}}>
+                        <i className="fas fa-layer-group" style={{marginRight:'3px'}}></i>
+                        Niv {this.props.nd}
+                      </span>
+                    </h5>
                 </div>
                 
-                <div style={{marginLeft:'15px'}}>
-                    <select className="custom-select custom-select-sm" value={this.props.val.tdp.regletteType}  id={`select1:${this.props.val.tdp._id}${this.props.keyOrigin}`} style={{textAlign:"right"}} onChange={this.HeadHandleChange.bind(this)}>
+                <div>
+                    <select className="custom-select custom-select-sm" value={this.props.val.tdp.regletteType} id={`select1:${this.props.val.tdp._id}${this.props.keyOrigin}`} onChange={this.HeadHandleChange.bind(this)} data-testid={`reglette-type-select-${this.props.nd}`}>
                         <option value="x" defaultValue>-----</option>
                         <option value="L/INX">L/INX</option>
                         <option value="R/DEG">R/DEG</option>
@@ -66,25 +70,26 @@ class RegletteConstructor extends React.Component{
                 
                 <input 
                     id={`input:${this.props.val.tdp._id}${this.props.keyOrigin}`}
-                    ref= {this.props.laRef}
+                    ref={this.props.laRef}
                     type="text" 
                     maxLength="2" 
                     style={{width:"46px"}} 
                     className="form-control form-control-sm"
                     value={this.props.val.tdp.regletteNbr}
-                    onChange = {this.BodyHandleChange.bind(this)} 
+                    onChange={this.BodyHandleChange.bind(this)} 
                     onBlur={()=>{}}
+                    data-testid={`reglette-nbr-input-${this.props.nd}`}
                 />
                 
-                <div style={{marginLeft:'10px', width:'70px'}}>
-                    <select className="custom-select custom-select-sm" value={this.props.val.tdp.option===null?'...':this.props.val.tdp.option} id={`${this.props.val.tdp._id}option${this.props.keyOrigin}`} onChange={this.EndHandleChange.bind(this)} style={{}}>
+                <div style={{width:'70px'}}>
+                    <select className="custom-select custom-select-sm" value={this.props.val.tdp.option===null?'...':this.props.val.tdp.option} id={`${this.props.val.tdp._id}option${this.props.keyOrigin}`} onChange={this.EndHandleChange.bind(this)} data-testid={`reglette-option-select-${this.props.nd}`}>
                         <option value="null">...</option>
                         <option value="I">Inversée</option>
                         <option value="TNI">Tête Non Isolable</option>
                     </select>
                 </div>  
-                <Button variant="danger" style={{marginLeft:'15px'}} size="sm" onClick={this.deleteHandleClick.bind(this)}>
-                    x
+                <Button variant="danger" size="sm" onClick={this.deleteHandleClick.bind(this)} data-testid={`reglette-delete-btn-${this.props.nd}`}>
+                    <i className="fas fa-times"></i>
                 </Button>            
             </div>
         )
