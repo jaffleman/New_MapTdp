@@ -3,6 +3,11 @@ image:
   tag: "v2.0.2"
 ingress:
   host: "maptdp.dev.jaffleman.tech"
+  api:
+    enabled: true
+    path: "/api"
+    backendService: "backend-backend-backend"
+    backendPort: 8000
 runtimeConfig:
   apiBaseUrl: "/api"
 replicaCount: 1
@@ -12,8 +17,3 @@ backend:
   port: 8000
 
 
-  api:
-    enabled: true
-    path: "/api"
-    backendService: "backend-backend-backend"
-    backendPort: 8000
