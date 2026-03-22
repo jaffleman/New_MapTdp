@@ -75,12 +75,12 @@ spec:
 
     # 2. Backend → Base de données PostgreSQL
     - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: database
-          podSelector:
-            matchLabels:
-              app: postgres
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: maptdp
+        podSelector:
+          matchLabels:
+            app.kubernetes.io/name: maptdp-db
       ports:
         - protocol: TCP
           port: 5432
