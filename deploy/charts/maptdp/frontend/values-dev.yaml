@@ -1,0 +1,8 @@
+image:
+  repository: docker.io/jaffleman971/maptdp-frontend
+  tag: "v1.3.3"
+ingress:
+  host: "maptdp.dev.jaffleman.tech"
+runtimeConfig:
+  apiBaseUrl: "https://api.dev.jaffleman.tech"
+replicaCount: 1

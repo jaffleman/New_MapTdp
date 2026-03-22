@@ -1,0 +1,37 @@
+{{- if and .Values.enabled .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "frontend.fullname" . }}-ingress
+  labels:
+    {{- include "frontend.labels" . | nindent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ include "frontend.fullname" . }}-tls
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "frontend.fullname" . }}-frontend
+                port:
+                  number: {{ .Values.service.port }}
+
+          {{- if .Values.ingress.api.enabled }}
+          - path: {{ .Values.ingress.api.path | default "/api" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "frontend.fullname" . }}-frontend
+                port:
+                  number: {{ .Values.service.port }}
+          {{- end }}
+{{- end }}

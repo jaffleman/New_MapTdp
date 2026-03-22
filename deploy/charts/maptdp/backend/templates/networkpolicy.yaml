@@ -1,11 +1,11 @@
-{{- if .Values.backend.enabled }}
+{{- if .Values.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "maptdp.fullname" . }}-backend-deny-all-except-allowed
+  name: {{ include "backend.fullname" . }}-backend-deny-all-except-allowed
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "maptdp.labels" . | nindent 4 }}
+    {{- include "backend.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
@@ -28,7 +28,7 @@ spec:
               app.kubernetes.io/name: traefik
       ports:
         - protocol: TCP
-          port: {{ .Values.backend.service.port }}
+          port: {{ .Values.service.port }}
 
     # 2. Autoriser Frontend → Backend (PROXY_PASS depuis Nginx)
     - from:
@@ -41,7 +41,7 @@ spec:
               app.kubernetes.io/instance: {{ .Release.Name }}
       ports:
         - protocol: TCP
-          port: {{ .Values.backend.service.port }}
+          port: {{ .Values.service.port }}
 
     # 3. Autoriser kube-dns pour la résolution DNS interne
     - from:

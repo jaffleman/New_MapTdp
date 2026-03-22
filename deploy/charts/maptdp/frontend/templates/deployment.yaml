@@ -1,12 +1,12 @@
-{{- if .Values.frontend.enabled }}
+{{- if .Values.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "maptdp.fullname" . }}-frontend
+  name: {{ include "frontend.fullname" . }}-deploy
   labels:
-    {{- include "maptdp.labels" . | nindent 4 }}
+    {{- include "frontend.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.frontend.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/component: frontend
@@ -16,7 +16,7 @@ spec:
       labels:
         app.kubernetes.io/component: frontend
         app.kubernetes.io/instance: {{ .Release.Name }}
-        {{- include "maptdp.labels" . | nindent 8 }}
+        {{- include "frontend.labels" . | nindent 8 }}
     spec:
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
@@ -24,8 +24,8 @@ spec:
       {{- end }}
       containers:
         - name: frontend
-          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
-          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 80
@@ -38,7 +38,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
-            {{- toYaml .Values.frontend.resources | nindent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: envjs
               mountPath: /usr/share/nginx/html/env.js
@@ -46,14 +46,14 @@ spec:
       volumes:
         - name: envjs
           configMap:
-            name: {{ include "maptdp.fullname" . }}-frontend-env
+            name: {{ include "frontend.fullname" . }}-frontend-env
             items:
               - key: env.js
                 path: env.js
       nodeSelector:
-        {{- toYaml .Values.frontend.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
       affinity:
-        {{- toYaml .Values.frontend.affinity | nindent 8 }}
+        {{- toYaml .Values.affinity | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.frontend.tolerations | nindent 8 }}
+        {{- toYaml .Values.tolerations | nindent 8 }}
 {{- end }}
