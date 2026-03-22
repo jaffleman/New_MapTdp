@@ -1,6 +1,6 @@
 image:
   repository: docker.io/jaffleman971/maptdp-frontend
-  tag: "v2.0.2"
+  tag: "latest"
 
 ingress:
   enabled: true
