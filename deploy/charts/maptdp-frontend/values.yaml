@@ -31,3 +31,7 @@ runtimeConfig:
 resources:
   requests: { cpu: 50m, memory: 64Mi }
   limits:   { cpu: 300m, memory: 256Mi }
+
+backend:
+  host: "maptdp-backend-backend-backend"
+  port: 8000
