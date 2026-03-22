@@ -10,3 +10,10 @@ replicaCount: 1
 backend:
   host: "http://maptdp-backend-backend-backend.maptdp.svc.cluster.local:8000/"
   port: 8000
+
+
+  api:
+    enabled: true
+    path: "/api"
+    backendService: "backend-backend-backend"
+    backendPort: 8000

@@ -13,25 +13,28 @@ spec:
     - hosts:
         - {{ .Values.ingress.host }}
       secretName: {{ include "frontend.fullname" . }}-tls
+
   rules:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
+          # FRONTEND (serveur Nginx)
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ include "frontend.fullname" . }}-frontend
+                name: {{ include "frontend.fullname" . }}-srv
                 port:
                   number: {{ .Values.service.port }}
 
+          # BACKEND (/api)
           {{- if .Values.ingress.api.enabled }}
           - path: {{ .Values.ingress.api.path | default "/api" }}
             pathType: Prefix
             backend:
               service:
-                name: {{ include "frontend.fullname" . }}-frontend
+                name: {{ .Values.ingress.api.backendService | default "backend-backend-backend" }}
                 port:
-                  number: {{ .Values.service.port }}
+                  number: {{ .Values.ingress.api.backendPort | default 8000 }}
           {{- end }}
 {{- end }}
