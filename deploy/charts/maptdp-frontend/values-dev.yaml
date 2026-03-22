@@ -6,7 +6,7 @@ ingress:
   api:
     enabled: true
     path: "/api"
-    backendService: "backend-backend-backend"
+    backendService: "backend-backend-deploy"
     backendPort: 8000
 runtimeConfig:
   apiBaseUrl: "/api"
