@@ -6,3 +6,7 @@ ingress:
 runtimeConfig:
   apiBaseUrl: "/api"
 replicaCount: 1
+
+backend:
+  host: "maptdp-backend-backend-backend"
+  port: 8000
