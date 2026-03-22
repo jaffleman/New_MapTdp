@@ -1,19 +1,12 @@
 image:
   repository: docker.io/jaffleman971/maptdp-frontend
   tag: "v2.0.2"
+
 ingress:
+  enabled: true
   host: "maptdp.dev.jaffleman.tech"
-  api:
-    enabled: true
-    path: "/api"
-    backendService: "backend-backend-deploy"
-    backendPort: 8000
+
 runtimeConfig:
-  apiBaseUrl: "/api"
+  apiBaseUrl: "https://api.dev.jaffleman.tech"
+
 replicaCount: 1
-
-backend:
-  host: "http://maptdp-backend-backend-backend.maptdp.svc.cluster.local:8000/"
-  port: 8000
-
-

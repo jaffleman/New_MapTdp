@@ -26,6 +26,9 @@ spec:
         - name: frontend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: REACT_APP_URL
+              value: {{ .Values.runtimeConfig.apiBaseUrl | quote }}
           ports:
             - name: http
               containerPort: 80
