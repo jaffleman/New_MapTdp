@@ -8,6 +8,6 @@ metadata:
 data:
   env.js: |
     window.__RUNTIME_CONFIG__ = {
-      API_BASE_URL: "{{ .Values.frontend.runtimeConfig.apiBaseUrl }}"
+      API_BASE_URL: "{{ .Values.runtimeConfig.apiBaseUrl }}"
     };
 {{- end }}
