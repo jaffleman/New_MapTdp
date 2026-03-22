@@ -8,5 +8,5 @@ runtimeConfig:
 replicaCount: 1
 
 backend:
-  host: "maptdp-backend-backend-backend"
+  host: "http://maptdp-backend-backend-backend.maptdp.svc.cluster.local:8000/"
   port: 8000
