@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: envjs
           configMap:
-            name: {{ include "frontend.fullname" . }}-frontend-env
+            name: {{ include "frontend.fullname" . }}-env
             items:
               - key: env.js
                 path: env.js
