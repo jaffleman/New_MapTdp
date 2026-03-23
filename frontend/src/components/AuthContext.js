@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
 
   const fetchMe = useCallback(async (t) => {
     try {
-      const res = await fetch(`https://api.dev.jaffleman.tech//auth/me`, {
+      const res = await fetch(`https://api.dev.jaffleman.tech/auth/me`, {
         headers: { 'Authorization': `Bearer ${t}` }
       });
       if (res.ok) {

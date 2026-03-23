@@ -60,9 +60,9 @@ class App extends React.Component {
   render(){
     return (
       <ThemeProvider>
-        <AuthProvider>
+        {/* <AuthProvider> */}
           <AppContent />
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </ThemeProvider>
     );    
   }

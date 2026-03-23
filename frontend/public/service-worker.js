@@ -37,7 +37,7 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
 
   // For API calls: network only (don't cache dynamic data)
-  if (url.pathname.startsWith('/api/')) return;
+  // if (url.pathname.startsWith('/api/')) return;
 
   // For navigation (HTML pages): network first, fallback to cache
   if (request.mode === 'navigate') {
