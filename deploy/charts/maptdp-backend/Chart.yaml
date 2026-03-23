@@ -1,5 +1,5 @@
 apiVersion: v2
-name: backend
+name: maptdp
 description: Helm chart pour le backend de MapTdp (backend Node.js) avec Traefik
 type: application
 version: 2.0.0
