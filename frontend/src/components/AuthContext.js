@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
 
   const fetchMe = useCallback(async (t) => {
     try {
-      const res = await fetch(`${API_URL}/api/auth/me`, {
+      const res = await fetch(`https://api.dev.jaffleman.tech//auth/me`, {
         headers: { 'Authorization': `Bearer ${t}` }
       });
       if (res.ok) {
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
   }, [token, fetchMe]);
 
   const login = async (email, password) => {
-    const res = await fetch(`${API_URL}/api/auth/login`, {
+    const res = await fetch(`https://api.dev.jaffleman.tech/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (email, password, username) => {
-    const res = await fetch(`${API_URL}/api/auth/register`, {
+    const res = await fetch(`https://api.dev.jaffleman.tech/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, username }),
