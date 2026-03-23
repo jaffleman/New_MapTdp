@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Shower from './components/showerComponent/Shower'
 import MapTdpHeader from './components/MapTdpTitle';
 import Displayer from './components/repCreator/Displayer';
-import { AuthProvider, AuthContext } from './components/AuthContext';
+import { /*AuthProvider,*/ AuthContext } from './components/AuthContext';
 import { ThemeProvider } from './components/ThemeContext';
 import AuthPage from './components/AuthPage';
 
