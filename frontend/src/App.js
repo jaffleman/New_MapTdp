@@ -7,9 +7,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Shower from './components/showerComponent/Shower'
 import MapTdpHeader from './components/MapTdpTitle';
 import Displayer from './components/repCreator/Displayer';
-import { /*AuthProvider,*/ AuthContext } from './components/AuthContext';
+import { AuthProvider, AuthContext } from './components/AuthContext';
 import { ThemeProvider } from './components/ThemeContext';
-import AuthPage from './components/AuthPage';
+// import AuthPage from './components/AuthPage';
 
 function AppContent() {
   const { user, loading } = useContext(AuthContext);
@@ -30,9 +30,9 @@ function AppContent() {
     );
   }
 
-  if (!user) {
-    return <AuthPage />;
-  }
+  // if (!user) {
+  //   return <AuthPage />;
+  // }
 
   return (
     <div> 
@@ -60,9 +60,9 @@ class App extends React.Component {
   render(){
     return (
       <ThemeProvider>
-        {/* <AuthProvider> */}
+        <AuthProvider>
           <AppContent />
-        {/* </AuthProvider> */}
+        </AuthProvider>
       </ThemeProvider>
     );    
   }
