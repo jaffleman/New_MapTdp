@@ -27,7 +27,7 @@ COPY --chown=nonroot:nonroot --from=builder /app/package*.json /app/
 COPY --chown=nonroot:nonroot --from=builder /app/index.js /app/
 COPY --chown=nonroot:nonroot --from=builder /app/app /app/app
 
-EXPOSE 8000
+EXPOSE 80
 USER nonroot
 
 CMD ["/app/index.js"]
