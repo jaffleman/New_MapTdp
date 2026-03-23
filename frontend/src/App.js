@@ -30,9 +30,9 @@ function AppContent() {
     );
   }
 
-  // if (!user) {
+  if (!user) {
   //   return <AuthPage />;
-  // }
+  }
 
   return (
     <div> 
