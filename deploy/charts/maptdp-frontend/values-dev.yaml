@@ -1,6 +1,6 @@
 image:
   repository: docker.io/jaffleman971/maptdp-frontend
-  tag: "sha-8ce42d7"
+  tag: "sha-03b03f4"
 
 ingress:
   enabled: true
