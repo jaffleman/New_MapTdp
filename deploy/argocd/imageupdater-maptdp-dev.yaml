@@ -8,10 +8,10 @@ spec:
     - namePattern: "maptdp-dev"
       images:
         - alias: frontend
-          imageName: docker.io/jaffleman971/maptdp-frontend:~1
+          imageName: docker.io/jaffleman971/maptdp-frontend
           commonUpdateSettings:
-            updateStrategy: semver
-            allowTags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
+            updateStrategy: name
+            allowTags: "regexp:^sha-[0-9a-f]+$"
             forceUpdate: true
           manifestTargets:
             helm:
@@ -19,10 +19,10 @@ spec:
               tag:  "frontend.image.tag"
 
         - alias: backend
-          imageName: docker.io/jaffleman971/maptdp-backend:~1
+          imageName: docker.io/jaffleman971/maptdp-backend
           commonUpdateSettings:
-            updateStrategy: semver
-            allowTags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
+            updateStrategy: name
+            allowTags: "regexp:^sha-[0-9a-f]+$"
             forceUpdate: true
           manifestTargets:
             helm:
@@ -33,5 +33,4 @@ spec:
     method: git
     gitConfig:
       branch: main
-      # ATTENTION : chemin relatif au répertoire du chart Helm de FE/BE
       writeBackTarget: "helmvalues:values-dev.yaml"
