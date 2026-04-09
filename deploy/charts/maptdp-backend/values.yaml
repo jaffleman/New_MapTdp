@@ -1,4 +1,6 @@
 # deploy/charts/maptdp/values.yaml
+ingress:
+  host: ""
 
 global:
   imagePullSecrets: []
