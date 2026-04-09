@@ -1,6 +1,3 @@
-image:
-  repository: docker.io/jaffleman971/maptdp-frontend
-  tag: "sha-03b03f4"
 ingress:
   enabled: true
   host: "maptdp.dev.jaffleman.tech"

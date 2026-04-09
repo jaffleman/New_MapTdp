@@ -24,8 +24,8 @@ spec:
       {{- end }}
       containers:
         - name: frontend
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           env:
             - name: REACT_APP_URL
               value: {{ .Values.runtimeConfig.apiBaseUrl | quote }}
