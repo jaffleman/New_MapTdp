@@ -3,8 +3,6 @@ name: Build & Push Backend Image (Docker Hub)
 on:
   push:
     branches: [ "main" ]
-    tags:
-      - "v*.*.*"
     paths:
       - "backend/**"
       - ".github/workflows/build-backend.yml"
@@ -101,7 +99,6 @@ jobs:
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
-            type=ref,event=tag
 
       - name: Build & Push
         uses: docker/build-push-action@v6

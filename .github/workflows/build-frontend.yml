@@ -3,8 +3,6 @@ name: Build & Push Frontend Image (Docker Hub)
 on:
   push:
     branches: [ "main" ]
-    tags:
-      - "v*.*.*"
     paths:
       - "frontend/**"
       - ".github/workflows/build-frontend.yml"
@@ -106,7 +104,6 @@ jobs:
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
-            type=ref,event=tag
 
       - name: Build & Push
         uses: docker/build-push-action@v6
