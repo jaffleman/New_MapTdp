@@ -69,10 +69,10 @@ jobs:
           npm test --if-present -- --watchAll=false || echo "no tests yet"
 
       - name: Build
-        if: steps.changes.outputs.changes == 'false' && github.event_name != 'pull_request'
         working-directory: frontend
         env:
           CI: "true"
+        if: steps.changes.outputs.changes == 'true' && github.event_name != 'pull_request'
         run: |
           npm run build
 
