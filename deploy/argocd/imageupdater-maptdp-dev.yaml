@@ -10,7 +10,7 @@ spec:
         - alias: frontend
           imageName: docker.io/jaffleman971/maptdp-frontend
           commonUpdateSettings:
-            updateStrategy: name
+            updateStrategy: latest
             allowTags: "regexp:^sha-[0-9a-f]+$"
             forceUpdate: true
           manifestTargets:
@@ -23,7 +23,7 @@ spec:
         - alias: backend
           imageName: docker.io/jaffleman971/maptdp-backend
           commonUpdateSettings:
-            updateStrategy: name
+            updateStrategy: latest
             allowTags: "regexp:^sha-[0-9a-f]+$"
             forceUpdate: true
           manifestTargets:
