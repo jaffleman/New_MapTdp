@@ -4,11 +4,11 @@ global:
   imagePullSecrets: []
 
 enabled: true
-
-image:
-  repository: docker.io/jaffleman971/maptdp-backend
-  tag: "latest"
-  pullPolicy: IfNotPresent
+backend:
+  image:
+    repository: docker.io/jaffleman971/maptdp-backend
+    tag: "latest"
+    pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
