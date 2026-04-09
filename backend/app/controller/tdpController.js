@@ -15,7 +15,6 @@ tdps.belongsTo(repartiteurs, {foreignKey:'rep'});
 tdps.belongsTo(options, {foreignKey:'opts'})
 
 const tdpController = {
-
   async search(req, res) {
     console.log("search request received", req.body);
     // recherche d'un tdp (exemple: 'cho94 L/INX19120')
