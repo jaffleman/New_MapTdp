@@ -11,3 +11,7 @@ env:
   value: "development"
 - name: LOG_LEVEL
   value: "debug"
+backend:
+  image:
+    tag: sha-f3405b3
+    repository: docker.io/jaffleman971/maptdp-backend
