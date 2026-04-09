@@ -9,5 +9,5 @@ runtimeConfig:
 replicaCount: 1
 frontend:
   image:
-    tag: sha-fef4bc3
+    tag: sha-e64e23e
     repository: docker.io/jaffleman971/maptdp-frontend
