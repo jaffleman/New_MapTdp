@@ -1,11 +1,11 @@
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: maptdp-dev
+  name: maptdp
   namespace: argocd
 spec:
   applicationRefs:
-    - namePattern: "maptdp-dev"
+    - namePattern: "frontend"
       images:
         - alias: frontend
           imageName: docker.io/jaffleman971/maptdp-frontend
@@ -18,6 +18,8 @@ spec:
               name: "frontend.image.repository"
               tag:  "frontend.image.tag"
 
+    - namePattern: "backend"
+      images:
         - alias: backend
           imageName: docker.io/jaffleman971/maptdp-backend
           commonUpdateSettings:
