@@ -85,6 +85,8 @@ export function tdpExist(
 
     return false;
 }
+
+//// Version précédente (commentée pour référence)
 // import ExtraSession from "../classes/newExtraSession"
 // import { Tdp } from "../classes/Tdp"
 
