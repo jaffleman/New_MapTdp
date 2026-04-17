@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - monitoring-maptdp.jaffleman.tech
+      secretName: grafana-maptdp-tls
+
+  rules:
+    - host: monitoring-maptdp.jaffleman.tech
+      http:
+        paths:
+          # FRONTEND (serveur Nginx)
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: monitoring-grafana
+                port:
+                  number: 80

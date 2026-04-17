@@ -79,7 +79,7 @@ const tdpController = {
 
     if (req.body.length < 1) return res.status(200).end("pas de tdp dans la demande"); //on verifie que la demande n'est pas null
     const results =[]; // un tableau pour stocker les resultats
-    for (let i = 0; i < req.body.length; i++) { //on boucle dans le cas ou on a plusieur rep dans la demande
+    for (let i = 0; i < req.body.length; i++) { //on boucle dans le cas ou on a plusieurs rep dans la demande
       try {
         const result = await tdps.findOne({ //recheche tout dans la table tdps
           attributes: ["reglette_nbr"], // les champs que l'on souhaite en retour de la requette (SELECT en sql)

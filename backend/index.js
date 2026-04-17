@@ -22,14 +22,14 @@ const PORT = process.env.PORT || 3000;
     });
 
     // ----------- MIDDLEWARE : Mesure de performance (par route) -----------
-    app.use((req, res, next) => {
-      const start = performance.now();
-      res.on("finish", () => {
-        const duration = (performance.now() - start).toFixed(2);
-        console.log(`⏱️  ${req.method} ${req.url} - ${duration} ms - Status ${res.statusCode}`);
-      });
-      next();
-    });
+    // app.use((req, res, next) => {
+    //   const start = performance.now();
+    //   res.on("finish", () => {
+    //     const duration = (performance.now() - start).toFixed(2);
+    //     console.log(`⏱️  ${req.method} ${req.url} - ${duration} ms - Status ${res.statusCode}`);
+    //   });
+    //   next();
+    // });
 
     // ----------- Body parser + CORS -----------
     app.use(bodyParser.urlencoded({ extended: false }));
