@@ -25,6 +25,7 @@ RUN if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; \
 # Copie du reste de l'application
 COPY . .
 
+
 # Build production (CRA)
 # Si jamais tu as une ancienne dépendance OpenSSL-1, tu peux décommenter la ligne suivante :
 # ENV NODE_OPTIONS=--openssl-legacy-provider
