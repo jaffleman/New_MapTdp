@@ -6,7 +6,7 @@
 /* ===== DARK THEME (default) ===== */
 :root,
 [data-theme="dark"] {
-  --bg: #1b1b1b;
+  --bg: #101010;
   --bg-gradient: none;
   --surface: rgba(20, 20, 20, 0.6);
   --surface-highlight: rgba(255, 255, 255, 0.05);
