@@ -307,7 +307,6 @@ const tdpController = {
   },
   
   test(req, res) {
-    console.log("Test request received : api/healthz");
     res.status(200).end("maptdp-backend online.")
   },
 
