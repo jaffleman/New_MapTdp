@@ -6,7 +6,6 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/build-backend.yml"
-
   pull_request:
     branches: [ "main" ]
     paths:
@@ -28,33 +27,21 @@ jobs:
       # ------------------------ CHECKOUT ------------------------
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # ------------------------ DETECT CHANGES ------------------------
+      # FIX: Remplace git diff HEAD~1 par tj-actions/changed-files
+      # → Gère correctement le premier commit, les PRs et les merge commits
       - name: Detect backend changes
         id: changes
-        run: |
-          git fetch --force
-
-          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep "^backend/" || true)
-
-          if [[ -n "$CHANGED" ]]; then
-            echo "changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes=false" >> $GITHUB_OUTPUT
-          fi
-
-      # ------------------------ SKIP IF NO CHANGE ------------------------
-      - name: Stop workflow if backend unchanged
-        if: steps.changes.outputs.changes == 'false' && github.event_name != 'pull_request'
-        run: |
-          echo "Aucun changement backend → build ignoré."
-          exit 0
+        uses: tj-actions/changed-files@v46
+        with:
+          files: |
+            backend/**
+            .github/workflows/build-backend.yml
 
       # ------------------------ NODE ------------------------
       - name: Use Node 24
-        if: steps.changes.outputs.changes == 'true' || github.event_name == 'pull_request'
+        if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -62,30 +49,34 @@ jobs:
           cache-dependency-path: backend/package-lock.json
 
       - name: Install deps & test
+        if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         working-directory: backend
-        if: steps.changes.outputs.changes == 'true' || github.event_name == 'pull_request'
+        # FIX: Suppression du `|| echo "no tests yet"` qui masquait les échecs.
+        # --if-present fait déjà un no-op si le script "test" n'existe pas.
         run: |
           npm ci
-          npm test --if-present || echo "no tests yet"
+          npm test --if-present
 
       # ------------------------ DOCKER ------------------------
       - name: Set up QEMU
-        if: steps.changes.outputs.changes == 'true' || github.event_name == 'pull_request'
+        if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         uses: docker/setup-qemu-action@v3
 
       - name: Set up Buildx
-        if: steps.changes.outputs.changes == 'true' || github.event_name == 'pull_request'
+        if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         uses: docker/setup-buildx-action@v3
 
+      # FIX: Condition harmonisée avec les autres étapes (== 'pull_request')
+      # Auparavant : `!= 'pull_request'` → login tentait sur toute PR, même sans changement
       - name: Login Docker Hub
-        if: steps.changes.outputs.changes == 'true' || github.event_name != 'pull_request'
+        if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Extract metadata
-        if: steps.changes.outputs.changes == 'true' || github.event_name == 'pull_request'
+        if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -97,7 +88,7 @@ jobs:
             type=ref,event=branch
 
       - name: Build & Push
-        if: steps.changes.outputs.changes == 'true' || github.event_name == 'pull_request'
+        if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
         with:
           context: ./backend
@@ -105,3 +96,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
+          # Bonus: activation du cache Docker layer pour accélérer les builds
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
