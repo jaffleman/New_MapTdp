@@ -12,10 +12,14 @@ const PORT = process.env.PORT || 3000;
     await sequelize.authenticate();
     console.log("Connection has been established successfully:", sequelize.options.host);
 
-    // ----------- MIDDLEWARE : LOG toutes les requêtes -----------
+    // ----------- MIDDLEWARE : LOG toutes les requêtes sauf healthz -----------
+    const ignoredPaths = new Set(["/healthz"]);
     app.use((req, res, next) => {
-      console.log(`➡️  [${new Date().toISOString()}] ${req.method} ${req.url}`);
-      if (Object.keys(req.body || {}).length) {
+      if (ignoredPaths.has(req.path)) {
+        return next();
+      }
+      console.log(`➡️  [${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+      if (req.body && Object.keys(req.body).length > 0) {
         console.log("   Body:", JSON.stringify(req.body));
       }
       next();
