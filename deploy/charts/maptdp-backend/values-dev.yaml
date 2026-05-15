@@ -10,5 +10,5 @@ env:
   value: "debug"
 backend:
   image:
-    tag: sha-8932bd1
+    tag: sha-34d6073
     repository: docker.io/jaffleman971/maptdp-backend
