@@ -31,19 +31,38 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
-
+              
           env:
+            # ✅ valeurs non sensibles (Helm)
             {{- range .Values.env }}
             - name: {{ .name }}
               value: {{ .value | quote }}
             {{- end }}
-
-          envFrom:
-            - secretRef:
-                name: maptdp-backend-env
-            {{- with .Values.envFrom }}
-            {{ toYaml . | nindent 12 }}
-            {{- end }}
+          
+            # ✅ valeurs sensibles (Vault)
+            - name: DB_HOST
+              value: "maptdp-db-maptdp-db"
+          
+            - name: DB_PORT
+              value: "5432"
+          
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: maptdp-db-auth
+                  key: user
+          
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: maptdp-db-auth
+                  key: password
+          
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: maptdp-db-auth
+                  key: db
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
