@@ -7,14 +7,13 @@ const {
   DB_PORT,
   DB_NAME,
 } = process.env;
-console.log({
-  DB_USER,
-  DB_PASSWORD,
-  DB_HOST,
-  DB_PORT,
-  DB_NAME
-});
-const connectionString = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+
+// ✅ ENCODAGE ICI
+const encodedPassword = encodeURIComponent(DB_PASSWORD);
+
+const connectionString = `postgresql://${DB_USER}:${encodedPassword}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+
+console.log(connectionString); // debug
 
 const sequelize = new Sequelize(connectionString, {
   define: {
