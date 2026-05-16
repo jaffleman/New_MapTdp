@@ -5,17 +5,27 @@ metadata:
   namespace: argocd
 
   annotations:
+    # ✅ image à surveiller (sans semver)
     argocd-image-updater.argoproj.io/image-list: |
-      frontend=docker.io/jaffleman971/maptdp-frontend:semver:~0.1
+      frontend=docker.io/jaffleman971/maptdp-frontend
 
+    # ✅ stratégie : prendre le dernier tag disponible
+    argocd-image-updater.argoproj.io/frontend.update-strategy: latest
+
+    # ✅ filtrer uniquement les tags SHA
+    argocd-image-updater.argoproj.io/frontend.allow-tags: regexp:^sha-
+
+    # ✅ écriture dans Git (GitOps)
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/git-branch: main
 
+    # ✅ mapping Helm → où modifier image
     argocd-image-updater.argoproj.io/frontend.helm.image-name: frontend.image.repository
     argocd-image-updater.argoproj.io/frontend.helm.image-tag: frontend.image.tag
 
 spec:
   project: default
+
   source:
     repoURL: https://github.com/jaffleman/New_MapTdp.git
     targetRevision: main
@@ -24,9 +34,11 @@ spec:
       valueFiles:
         - values.yaml
         - values-dev.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: maptdp
+
   syncPolicy:
     automated:
       prune: true
