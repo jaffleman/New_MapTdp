@@ -5,6 +5,7 @@ metadata:
   namespace: argocd
 
   annotations:
+    argocd.argoproj.io/sync-wave: "2"
     # ✅ image à surveiller (sans semver)
     argocd-image-updater.argoproj.io/image-list: |
       backend=docker.io/jaffleman971/maptdp-backend

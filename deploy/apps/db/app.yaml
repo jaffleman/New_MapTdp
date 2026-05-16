@@ -4,6 +4,7 @@ metadata:
   name: maptdp-db
   namespace: argocd
   annotations:
+    argocd.argoproj.io/sync-wave: "2"
     argocd-image-updater.argoproj.io/image-list: db=docker.io/jaffleman971/maptdp-db
 
     # ✅ stratégie adaptée pipeline actuel
