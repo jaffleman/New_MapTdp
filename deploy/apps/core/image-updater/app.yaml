@@ -16,6 +16,7 @@ spec:
             - name: DockerHub
               api_url: https://registry-1.docker.io
               ping: true
+              credentials: pullsecret:argocd/dockerhub-secret
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
