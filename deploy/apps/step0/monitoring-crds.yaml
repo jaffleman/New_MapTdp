@@ -26,8 +26,7 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: false
-    retry:
-      limit: 5
+      selfHeal: true
     syncOptions:
       - Replace=true
+      - SkipDryRunOnMissingResource=true
