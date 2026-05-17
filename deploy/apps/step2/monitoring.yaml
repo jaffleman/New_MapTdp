@@ -16,6 +16,10 @@ spec:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
     targetRevision: 58.0.0
+    helm:
+      parameters:
+        - name: crds.enabled
+          value: "false"
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -25,3 +29,4 @@ spec:
       selfHeal: false
     retry:
       limit: 5
+
