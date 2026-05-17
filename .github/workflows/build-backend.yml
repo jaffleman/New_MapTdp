@@ -4,12 +4,12 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "backend/**"
+      - "apps/backend/**"
       - ".github/workflows/build-backend.yml"
   pull_request:
     branches: [ "main" ]
     paths:
-      - "backend/**"
+      - "apps/backend/**"
 
 permissions:
   contents: read
@@ -36,7 +36,7 @@ jobs:
         uses: tj-actions/changed-files@v46
         with:
           files: |
-            backend/**
+            apps/backend/**
             .github/workflows/build-backend.yml
 
       # ------------------------ NODE ------------------------
@@ -46,11 +46,11 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: apps/backend/package-lock.json
 
       - name: Install deps & test
         if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
-        working-directory: backend
+        working-directory: apps/backend
         # FIX: Suppression du `|| echo "no tests yet"` qui masquait les échecs.
         # --if-present fait déjà un no-op si le script "test" n'existe pas.
         run: |
@@ -91,8 +91,8 @@ jobs:
         if: steps.changes.outputs.any_changed == 'true' || github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: ./apps/backend
+          file: ./apps/backend/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
