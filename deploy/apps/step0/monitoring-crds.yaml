@@ -1,10 +1,11 @@
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: monitoring-crds
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 
 spec:
   ignoreDifferences:
@@ -15,8 +16,8 @@ spec:
 
   source:
     repoURL: https://github.com/prometheus-operator/prometheus-operator
-    targetRevision: release-0.72
-    path: example/prometheus-operator-crd   # ✅ contient uniquement les CRDs
+    targetRevision: v0.73.0
+    path: example/prometheus-operator-crd
 
   destination:
     server: https://kubernetes.default.svc
@@ -26,9 +27,7 @@ spec:
     automated:
       prune: true
       selfHeal: false
-
     retry:
       limit: 5
-
     syncOptions:
       - Replace=true
