@@ -11,7 +11,7 @@ const {
 // ✅ ENCODAGE ICI
 const encodedPassword = encodeURIComponent(DB_PASSWORD);
 
-const connectionString = `postgresql://${DB_USER}:${encodedPassword}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const connectionString = `postgres://${DB_USER}:${encodedPassword}@${DB_HOST}:${DB_PORT}/maptdpbdd`;
 
 console.log(connectionString); // debug
 
