@@ -11,6 +11,11 @@ spec:
     repoURL: https://charts.external-secrets.io
     chart: external-secrets
     targetRevision: 0.9.20
+
+    helm:
+      values: |
+        installCRDs: true
+
   destination:
     server: https://kubernetes.default.svc
     namespace: external-secrets
@@ -18,5 +23,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
