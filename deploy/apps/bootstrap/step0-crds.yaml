@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: step0-crds
+  namespace: argocd
+  annotations:
+    argocd.openshift.io/sync-wave: "1" # ◄ Première vague
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/jaffleman/New_MapTdp.git'
+    targetRevision: HEAD
+    path: deploy/app/infra/crds
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
