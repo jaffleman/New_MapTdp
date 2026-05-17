@@ -9,8 +9,8 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/jaffleman/New_MapTdp.git'
-    targetRevision: HEAD
-    path: deploy/app/infra/core
+    targetRevision: new_infra
+    path: deploy/apps/infra/core
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: k8s-core

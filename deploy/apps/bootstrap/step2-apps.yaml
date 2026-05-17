@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/jaffleman/New_MapTdp.git'
-    targetRevision: HEAD
+    targetRevision: new_infra
     path: deploy/apps/user-services
   destination:
     server: 'https://kubernetes.default.svc'
