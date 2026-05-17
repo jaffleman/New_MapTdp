@@ -24,6 +24,6 @@ spec:
 
     retry:
       limit: 5
-
+      
     syncOptions:
-      - ServerSideApply=true ✅   # 🔥 OBLIGATOIRE
+      - Replace=true
