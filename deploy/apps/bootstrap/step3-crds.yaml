@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: step2-apps
+  name: step3-crds
   namespace: argocd
   annotations:
-    argocd.openshift.io/sync-wave: "3" # ◄ Troisième vague
+    argocd.openshift.io/sync-wave: "4" # ◄ Quatrième vague
 spec:
   project: default
   source:
     repoURL: 'https://github.com/jaffleman/New_MapTdp.git'
     targetRevision: new_infra
-    path: deploy/apps/infra/user-services
+    path: deploy/apps/apps
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: apps
