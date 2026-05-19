@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-crds
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 34.1.0   # version stable du chart
+
+    helm:
+      parameters:
+        - name: installCRDs
+          value: "true"
+        - name: deployment.enabled
+          value: "false"     # IMPORTANT : n’installe pas Traefik, seulement les CRDs
+        - name: service.enabled
+          value: "false"
+        - name: ingressRoute.enabled
+          value: "false"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - SkipDryRunOnMissingResource=true

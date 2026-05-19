@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 34.1.0   # version stable du chart
+
+    helm:
+      parameters:
+        - name: installCRDs
+          value: "false"    
+        - name: service.type
+          value: "LoadBalancer"
+        - name: ingressRoute.dashboard.enabled
+          value: "true"
+        - name: logs.general.level
+          value: "INFO"
+        - name: logs.access.enabled
+          value: "true"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infra
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - CreateNamespace=true

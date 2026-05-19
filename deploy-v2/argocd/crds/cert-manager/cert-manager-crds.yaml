@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager-crds
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: v1.15.3   # version stable du chart
+
+    helm:
+      parameters:
+        - name: installCRDs
+          value: "true"
+        - name: webhook.enabled
+          value: "false"
+        - name: cainjector.enabled
+          value: "false"
+        - name: startupapicheck.enabled
+          value: "false"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - SkipDryRunOnMissingResource=true

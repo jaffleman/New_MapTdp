@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: v1.15.3
+
+    helm:
+      parameters:
+        - name: installCRDs
+          value: "false"         
+        - name: webhook.enabled
+          value: "true"
+        - name: cainjector.enabled
+          value: "true"
+        - name: startupapicheck.enabled
+          value: "true"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infra             
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
+
