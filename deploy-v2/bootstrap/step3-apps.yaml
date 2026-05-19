@@ -11,6 +11,8 @@ spec:
     repoURL: 'https://github.com/jaffleman/New_MapTdp.git'
     targetRevision: new_infra
     path: deploy-v2/argocd/apps
+    directory:
+      recurse: true
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: apps
